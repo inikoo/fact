@@ -1,0 +1,122 @@
+@font-face {
+  font-family: 'Oxygen';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Oxygen Light'), local('Oxygen-Light'),  url('fonts/oxigen300.woff') format('woff');
+}
+@font-face {
+  font-family: 'Oxygen';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Oxygen'), local('Oxygen-Regular'),  url('fonts/oxigen400.woff') format('woff');
+}
+@font-face {
+  font-family: 'Oxygen';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Oxygen Bold'), local('Oxygen-Bold'),  url('fonts/oxigen700.woff') format('woff');
+}
+
+body{font-family: 'Oxygen', sans-serif;font-weight: 400;color:#777}
+a{color:#777;text-decoration: none;}
+.aright{text-align:right}
+
+.unselectable_text{
+   -moz-user-select: none;
+   -khtml-user-select: none;
+}
+.buttons button{
+
+    display:block;
+    float:right;
+    margin:0 7px 0 0;
+    background-color:#f5f5f5;
+    border:1px solid #dedede;
+    border-top:1px solid #eee;
+    border-left:1px solid #eee;    
+    font-size:80%;
+    line-height:130%;
+    text-decoration:none;
+    font-weight:700;
+    color:#565656;
+    cursor:pointer;
+    padding:2px 10px;
+    border-radius:4px
+}
+
+
+
+.buttons.center {
+	text-align: center;
+}
+.buttons.center button{
+	float:none;display: inline;
+}
+.buttons button:hover{
+    background-color:#e0d6e8;
+    border:1px solid #c5b1d5;
+    color:#336699;
+    text-decoration:none;
+}
+.buttons button.selected{
+    border:1px solid #5b3777;
+    color:#FFF;
+    background-color:#5b3777;
+  cursor:default;
+	
+}
+
+
+.widget_table{
+width:100%;padding:5px 10px 10px 10px;
+
+}
+
+.widget_table td{padding:2px 2px}
+.widget_table th{padding:0 10px 10px 10px;font-size:20px;font-weight: 700;}
+.change_site,.change_service{opacity:0;cursor:pointer;position:absolute;top:28px;}
+
+#period_chooser{margin:20px auto;}
+
+#title_icon{position:relative;width:30px}
+#next{right:15px;top:20px}
+#prev{left:15px;top:20px}
+#site_logo,#service_logo{height:32px;vertical-align:-5px}
+
+
+
+
+.dashboard_line_plot{float:left;margin-left:20px;float:left;width:630px;}
+.dashboard_line_plot_legend{float:left;padding:20px}
+.dashboard_line_plot_legend .last_value{font-size:70px;position:relative;top:0px;left:-50px;color:#0081c5}
+.dashboard_line_plot_legend .last_value_title{color:#777;position:relative;left:40px;display:none}
+
+
+
+.dashboard_line_plot .axis path,.dashboard_line_plot .axis line {
+  fill: none;
+  stroke: #ccc;
+
+  shape-rendering: crispEdges;
+}
+.dashboard_line_plot .axis text{
+fill: #aaa;
+  font-size:80%;
+}
+
+
+.dashboard_line_plot .line {
+  fill: none;
+  stroke: #5b3777;
+  stroke-width: 3px;
+}
+
+.dashboard_line_plot .area {
+    fill: #f1ebf5;
+    stroke-width: 0;
+}
+
+.dashboard_line_plot .dot{
+ fill:#5b3777;
+  stroke: #5b3777;
+}

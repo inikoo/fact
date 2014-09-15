@@ -1,0 +1,9 @@
+[submodule "libs/yui3"]
+	path = libs/yui3
+	url = http://github.com/yui/yui3
+[submodule "libs/yui3-gallery"]
+	path = libs/yui3-gallery
+	url = http://github.com/yui/yui3-gallery
+[submodule "libs/yui-2in3"]
+	path = libs/yui-2in3
+	url = http://github.com/yui/2in3
