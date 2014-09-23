@@ -15,7 +15,7 @@
 		<div class="presentation">
 			<a  href="index.php"><img id="logo" src="art/logo.png"></a>
 			<h1 style="margin-left:10px" >
-				CRC
+				FACT API based Service 
 			</h1>
 			<h2 id="main_title">
 				{$title}

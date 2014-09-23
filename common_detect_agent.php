@@ -125,31 +125,6 @@ function ip() {
 
 
 
-function get_useragent_key($useragent) {
-
-	//$useragent_name=get_useragent_name($useragent);
-	if ($useragent=='') {
-		return 1;
-	}
-
-	$sql=sprintf("select `User Agent Key` from kbase.`User Agent Dimension` where `User Agent String`=%s  ",prepare_mysql($useragent));
-	$res=mysql_query($sql);
-	if ($row=mysql_fetch_assoc($res)) {
-		$useragent_key=$row['User Agent Key'];
-	}else {
-
-		$sql=sprintf("insert into kbase.`User Agent Dimension` (`User Agent String`) values (%s) ",prepare_mysql($useragent));
-		mysql_query($sql);
-		$useragent_key=mysql_insert_id();
-
-	}
-	if (!$useragent_key)
-		$useragent_key=1;
-
-	return $useragent_key;
-}
-
-
 
 function get_user_browser($useragent) {
 
@@ -291,6 +266,20 @@ function get_user_os($useragent) {
 	}
 }
 
-
+function url_origin($s, $use_forwarded_host=false)
+{
+    $ssl = (!empty($s['HTTPS']) && $s['HTTPS'] == 'on') ? true:false;
+    $sp = strtolower($s['SERVER_PROTOCOL']);
+    $protocol = substr($sp, 0, strpos($sp, '/')) . (($ssl) ? 's' : '');
+    $port = $s['SERVER_PORT'];
+    $port = ((!$ssl && $port=='80') || ($ssl && $port=='443')) ? '' : ':'.$port;
+    $host = ($use_forwarded_host && isset($s['HTTP_X_FORWARDED_HOST'])) ? $s['HTTP_X_FORWARDED_HOST'] : (isset($s['HTTP_HOST']) ? $s['HTTP_HOST'] : null);
+    $host = isset($host) ? $host : $s['SERVER_NAME'] . $port;
+    return $protocol . '://' . $host;
+}
+function full_url($s, $use_forwarded_host=false)
+{
+    return url_origin($s, $use_forwarded_host) . $s['REQUEST_URI'];
+}
 
 ?>

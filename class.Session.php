@@ -215,7 +215,7 @@ class Session
 		$sql = "
 
 			SELECT
-				`Session Data`,`Session Key`
+				`Session Data`,`Session Key`,`Session ID`
 			FROM
 				`Session Dimension`
 			WHERE
@@ -232,18 +232,30 @@ class Session
 		if($result->num_rows > 0) {
 			$data = $result->fetch_assoc();
 			$this->id=$data['Session Key'];
+			$this->data=$data;
 			return $data['Session Data']; 
 		}
 		else 
 		return "";
 		
 	}
+	
+	
+	
+	function get_data($id){
+	global $mysqli;
+		$sql=sprintf("select * from `Session Dimension` where `Session Key`=%d",$id);
+		$res=$mysqli->query($sql);
+		if($row=$res->fetch_assoc()){
+			$this->data=$row;
+		}
+	
+	
+	
+	}
+	
+	
 
-	/**
-	*  Custom write() function
-	*
-	*  @access private
-	*/
 	function write($session_id, $session_data)
 	{
 		global $mysqli;
@@ -259,13 +271,15 @@ class Session
 					`Session ID`,
 					`HTTP User Agent`,
 					`Session Data`,
-					`Session Expire`
+					`Session Expire`,
+					`Session Created`
 				)
 			VALUES (
 				'".addslashes($session_id)."',
 				'".addslashes(md5($_SERVER["HTTP_USER_AGENT"] . $this->securityCode))."',
 				'".addslashes($session_data)."',
-				'".addslashes(time() + $this->sessionLifetime)."'
+				'".addslashes(time() + $this->sessionLifetime)."',
+				'".addslashes(gmdate('Y-m-d H:i:s'))."'
 				
 			)
 			ON DUPLICATE KEY UPDATE
@@ -276,12 +290,18 @@ class Session
 
 		//  print_r($session_data);
 		
-		
+	
 		
 		if($mysqli->query($sql)){
 			
+			//print "affected rows:".$mysqli->affected_rows;
 			
 			if ($mysqli->affected_rows > 1) {
+			
+				$this->id=$mysqli->insert_id;
+				
+				$this->get_data($this->id);
+			
 				return true;
 			} else {
 				return "";

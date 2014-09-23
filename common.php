@@ -9,6 +9,7 @@ require_once 'conf/dns.php';
 require_once 'common_functions.php';
 require_once 'common_detect_agent.php';
 require_once "class.Session.php";
+require_once "class.User.php";
 
 
 $theme='clean';
@@ -31,6 +32,10 @@ $max_session_time=10000000;
 $max_session_time_in_milliseconds=1000*$max_session_time;
 $session = new Session($max_session_time);
 
+$user=identify_user();
+
+
+
 
 include_once 'libs/Smarty/libs/Smarty.class.php';
 $smarty = new Smarty();
@@ -38,7 +43,6 @@ $smarty->template_dir = 'templates';
 $smarty->compile_dir = 'server_files/smarty/templates_c';
 $smarty->cache_dir = 'server_files/smarty/cache';
 $smarty->config_dir = 'server_files/smarty/configs';
-//$smarty->error_reporting = E_STRICT;
 
 
 
@@ -82,5 +86,35 @@ $smarty->assign('nav_menu',$nav_menu);
 $_tmp=explode("/", $_SERVER['PHP_SELF']);
 $smarty->assign('page_name',preg_replace('/\..*+/','',array_pop($_tmp)));
 $smarty->assign('analyticstracking',( file_exists('templates/analyticstracking.tpl')?true:false));
+
+
+
+function identify_user() {
+	
+	
+	
+
+	if (isset($_COOKIE["Fact_URT"])) {
+		$user=new User($_COOKIE["Fact_URT"]);
+	}else {
+	
+		$rnd=mt_rand().date('U');
+
+		$user_data=array(
+			'User Alias'=>$rnd,
+			'User Handle'=>$rnd,
+			'User Type'=>'Visitor'
+		);
+		$user=new User('find',$user_data,'create');
+		
+		//print_r($user);
+		
+		setcookie("Fact_URT",$user->id,time()+3600*24*365);
+
+	}
+	
+	return $user;
+	
+}
 
 ?>
