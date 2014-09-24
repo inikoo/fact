@@ -1,5 +1,5 @@
+server_files/smarty/templates_c/*
 conf/dns.php
 phpinfo.php
-server_files/smarty/templates_c/*
 !server_files/smarty/templates_c/README.txt
 test.php

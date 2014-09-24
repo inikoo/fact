@@ -56,3 +56,7 @@ a,table,button,tbody{outline: none;}
 .funder .logo{border:1px solid #ccc;height:60px}
 
 input{padding:10px;font-size:100%}
+
+#results_overview td{padding:3px 20px 2px 20px;}
+#results_overview td{border-top:1px solid #ccc}
+#results_overview{width:400px; border-collapse: collapse;margin:0 auto;border-top:1px solid #777;border-bottom:1px solid #777}

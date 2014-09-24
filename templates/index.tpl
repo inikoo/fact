@@ -51,15 +51,45 @@
 	<div id="submit_query">
 		<span id="submit" class="button" style="width:400px;margin-top:60px;font-size:150%;height:30px">{t}Select Funders & Input Journals{/t}</span> 
 	</div>
-
 	<div id="progress_bar" style="display:none;text-align:center;padding:20px">
 		<div id="progress_status">
 		</div>
 		<div id="progress_stats">
-			
-			
 		</div>
 	</div>
-
-</div>
+	<div id="results" style="display:none;text-align:center;padding:20px">
+		<div id="results_header">
+			<table border="0" id="results_overview">
+				<tr>
+					<td>{t}Gold{/t}</td>
+					<td id="gold"></td>
+					<td id="compilant" rowspan="3"> </td>
+				</tr>
+				<tr>
+					<td>{t}Green{/t}</td>
+					<td id="green"></td>
+				</tr>
+				<tr>
+					<td>{t}Gold & Green{/t}</td>
+					<td id="green_and_gold"></td>
+				</tr>
+				<tr>
+					<td>{t}No Compilant{/t}</td>
+					<td id="no_compilant"></td>
+					<td id="total_no_compilant" rowspan="3"> </td>
+				</tr>
+				<tr>
+					<td>{t}Input Error{/t}</td>
+					<td id="error"></td>
+				</tr>
+				<tr>
+				</table>
+			</div>
+		</div>
+		
+	<div id="pizza">
+	
+	</div>
+		
+	</div>
 	{include file='footer.tpl'} 

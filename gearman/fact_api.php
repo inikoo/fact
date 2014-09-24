@@ -56,6 +56,10 @@ function call_fact_api($journal_data,$funders_data) {
 
 
 	$result=array(
+		'query'=>$journal_data['query'],
+		'resut_type'=>'Error',
+		'compilance'=>'No',
+		'compilance_type'=>'None',
 		'journal'=>array('issn'=>'','title'=>'','publisher'=>''),
 		'overall'=>array('code'=>'','report'=>'','compilance'=>''),
 		'gold'=>array('code'=>'','report'=>'','compilance'=>'','reason'=>''),
@@ -93,33 +97,125 @@ function call_fact_api($journal_data,$funders_data) {
 
 function parse_xml_result($result,$xml) {
 
-	
+
 
 
 	$data=XML2Array::createArray($xml);
-	
-	
-	$result['journal']['issn']=$data['factapi']['journallist']['journal']['@attributes']['issn'];
-	$result['journal']['title']=$data['factapi']['journallist']['journal']['@attributes']['issn'];
-	
-	print_r($data);
-	
+
+	//print_r($data);
+
+
+
+
+	if (isset($data['factapi']['journallist']['journal'])) {
+
+		$result['journal']['issn']=$data['factapi']['journallist']['journal']['@attributes']['issn'];
+		$result['journal']['title']=$data['factapi']['journallist']['journal']['title'];
+
+		$result['result_type']='Ok';
+
+	}else {
+		$result['result_type']='Error';
+	}
+
+
+
+	$result['compilance']='No';
+	$result['compilance_type']='None';
+	if (isset($data['factapi']['gold']['goldcompliance'])) {
+
+		switch ($data['factapi']['gold']['goldcompliance']['@attributes']['goldcompliancecode']) {
+		case 'yes':
+			$result['gold']['code']='Yes';
+			$result['compilance']='Yes';
+			$result['compilance_type']='Gold';
+			break;
+		case 'no':
+			$result['gold']['code']='No';
+			break;
+		case 'maybe':
+			$result['gold']['code']='Maybe';
+			break;
+		case 'unknown':
+			$result['gold']['code']='Unknown';
+			break;
+		default:
+			$result['gold']['code']=$data['factapi']['gold']['goldcompliance']['@attributes']['goldcompliancecode'];
+		}
+		$result['gold']['report']=$data['factapi']['gold']['goldcompliance']['@attributes']['goldcompliancereport'];
+
+
+	}
+
+	if (isset($data['factapi']['green']['greencompliance'])) {
+
+		switch ($data['factapi']['green']['greencompliance']['@attributes']['greencompliancecode']) {
+		case 'yes':
+			$result['green']['code']='Yes';
+
+
+
+			if ($result['compilance']=='Yes') {
+				$result['compilance_type']='GreenGold';
+			}else {
+				$result['compilance_type']='Green';
+			}
+			$result['compilance']='Yes';
+
+
+			break;
+		case 'no':
+			$result['green']['code']='No';
+			break;
+		case 'maybe':
+			$result['green']['code']='Maybe';
+			break;
+		case 'unknown':
+			$result['green']['code']='Unknown';
+			break;
+		default:
+			$result['green']['code']=$data['factapi']['green']['greencompliance']['@attributes']['greencompliancecode'];
+		}
+		$result['green']['report']=$data['factapi']['green']['greencompliance']['@attributes']['greencompliancereport'];
+
+
+	}
+
+
 	return $result;
-	
+
 
 }
 
-function save_result_to_db($fork_key,$result){
+function save_result_to_db($fork_key,$result) {
 	global $mysqli;
 
-print_r($result);
 
-	$sql=sprintf("insert into `Result Dimension` (`Date`,`Fork Key`,`Journal ISSN`) values (NOW(),%d,%s)",
-	$fork_key,
-	prepare_mysql($result['journal']['issn'])
-	
+
+	$sql=sprintf("insert into `Result Dimension` (
+	`Date`,`Fork Key`,`Result Type`,`Query`,`Journal ISSN`,`Journal Name`,
+	`Compilance`,`Compilance Type`,
+	`Gold Compilance Code`,`Gold Compilance Report`,`Green Compilance Code`,`Green Compilance Report`
+	)
+	values (
+	NOW(),%d,%s,%s,%s,%s,
+	%s,%s,
+	%s,%s,%s,%s
+	)",
+
+		$fork_key,
+		prepare_mysql($result['result_type']),
+		prepare_mysql($result['query']),
+		prepare_mysql($result['journal']['issn']),
+		prepare_mysql($result['journal']['title']),
+		prepare_mysql($result['compilance']),
+		prepare_mysql($result['compilance_type']),
+		prepare_mysql($result['gold']['code']),
+		prepare_mysql($result['gold']['report']),
+		prepare_mysql($result['green']['code']),
+		prepare_mysql($result['green']['report'])
 	);
-	
+//print $sql;
 	$mysqli->query($sql);
 
 }

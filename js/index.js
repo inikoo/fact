@@ -179,6 +179,45 @@ function submit() {
 }
 
 
+function get_results(fork_key){
+	
+  request = 'ar_results.php?tipo=get_results&fork_key=' + fork_key 
+    //alert(request)
+    Y.io(request, {
+
+        on: {
+            success: function(id, o) {
+                //alert(o.responseText)
+                var r = JSON.parse(o.responseText);
+
+                if (r.state == 200) {
+                
+                Y.one('#results').setStyle('display','block')
+                
+                for (x in r.result_data) {
+                	if(Y.one('#'+x)!=undefined){
+                		Y.one('#'+x).set('innerHTML',r.result_data[x])
+                	}
+                }
+                
+                } else {
+                    alert(r.msg);
+                }
+
+
+            },
+            failure: function(id, result) {}
+        }
+    });
+
+
+
+
+
+
+}
+
+
 function api_request_progess(fork_key) {
 
     request = 'ar_fork.php?tipo=get_wait_info&fork_key=' + fork_key + '&tag=journals'
@@ -208,16 +247,16 @@ function api_request_progess(fork_key) {
 
 
 
-
+get_results(r.fork_key);
 
 
 
 
                     } else if (r.fork_state == 'Cancelled') {
+	get_results(r.fork_key);
+                    } else if (r.fork_state == 'Finished') {
 
-                    } else {
-
-
+						get_results(r.fork_key);
                     }
 
 
@@ -352,4 +391,60 @@ Y.use("node", "json-stringify", "io-base", "uploader", "anim", function(Y) {
     }
 
 
+});
+
+Y.use("datatable", "datasource-get", "datasource-jsonschema", "datatable-datasource", function (Y) {
+
+   
+        
+       var url = "ar_results.php?tipo=list_results",
+        query = "&fork_key=" + encodeURIComponent('14'),
+        dataSource,
+        table; 
+      
+  
+    dataSource = new Y.DataSource.Get({ source: url });
+
+//alert(url+query)
+
+    dataSource.plug(Y.Plugin.DataSourceJSONSchema, {
+        schema: {
+            resultListLocator: "query.results.Result",
+            resultFields: [
+                "query",
+                "journal"
+            ]
+        }
+    });
+
+    table = new Y.DataTable({
+        columns: [
+            "query",
+            "journal"
+           
+        ],
+        summary: "Pizza places near 98089",
+        caption: "Table with JSON data from YQL"
+    });
+    
+    table.plug(Y.Plugin.DataTableDataSource, { datasource: dataSource });
+
+    table.render("#pizza");
+
+    table.datasource.load({
+        request: query,
+        
+        callback: { 
+            success: function (e) {
+            //for(x in e){
+            //alert(x+' '+e[x])
+            //}
+                table.datasource.onDataReturnInitializeTable(e);
+            },
+            failure: function() {
+                Y.one('#pizza').setHTML(
+                    'The data could not be retrieved. Please <a href="?mock=true">try this example with mocked data</a> instead.');
+            }
+        }
+    });
 });
