@@ -12,7 +12,7 @@ require_once 'ar_common.php';
 require_once 'common_units_functions.php';
 
 
-$mysqli->query(sprintf("insert into debug (message) values(%s)",prepare_mysql(var_export($_FILES, true))));
+//$mysqli->query(sprintf("insert into debug (message) values(%s)",prepare_mysql(var_export($_FILES, true))));
 
 /*
 

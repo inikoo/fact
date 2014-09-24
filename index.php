@@ -16,7 +16,7 @@ $css_files[]='css/themes/'.$theme.'/style.css';
 $css_files[]='css/themes/'.$theme.'/buttons.css';
 
 $js_files=array(
-	'libs/yui3/build/yui/yui-min.js',
+	'libs/yui/yui3/build/yui/yui-min.js',
 	'js/common.js',
 	'js/index.js'
 );

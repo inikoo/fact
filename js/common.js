@@ -1,5 +1,4 @@
 //@author Raul Perusquia <rulovico@gmail.com>
-//Copyright (c) 2009 LW
 
 
 
@@ -11,17 +10,17 @@ function auto_logout_timer() {
 
 
 var CURRENT_CONF = {
-    base: "libs/yui3/build/",
+    base: "libs/yui/yui3/build/",
     combine: 0,
     groups: {
         gallery: {
-            base: 'libs/yui3-gallery/build/',
+            base: 'libs/yui/yui3-gallery/build/',
             patterns: {
                 'gallery-': {}
             }
         },
         yui2: {
-            base: 'libs/yui-2in3/dist/2.9.0/build/',
+            base: 'libs/yui/yui-2in3/dist/2.9.0/build/',
             patterns: {
                 'yui2-': {
                     configFn: function(me) {
