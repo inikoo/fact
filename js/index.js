@@ -106,7 +106,6 @@ function submit() {
         //close_select_funders.run()
         //close_input_journals.run()
         //close_submit_query.run()
-
         Y.io(request, {
 
             on: {
@@ -179,9 +178,9 @@ function submit() {
 }
 
 
-function get_results(fork_key){
-	
-  request = 'ar_results.php?tipo=get_results&fork_key=' + fork_key 
+function get_results(fork_key) {
+
+    request = 'ar_results.php?tipo=get_results&fork_key=' + fork_key
     //alert(request)
     Y.io(request, {
 
@@ -191,15 +190,15 @@ function get_results(fork_key){
                 var r = JSON.parse(o.responseText);
 
                 if (r.state == 200) {
-                
-                Y.one('#results').setStyle('display','block')
-                
-                for (x in r.result_data) {
-                	if(Y.one('#'+x)!=undefined){
-                		Y.one('#'+x).set('innerHTML',r.result_data[x])
-                	}
-                }
-                
+
+                    Y.one('#results').setStyle('display', 'block')
+
+                    for (x in r.result_data) {
+                        if (Y.one('#' + x) != undefined) {
+                            Y.one('#' + x).set('innerHTML', r.result_data[x])
+                        }
+                    }
+
                 } else {
                     alert(r.msg);
                 }
@@ -226,7 +225,7 @@ function api_request_progess(fork_key) {
 
         on: {
             success: function(id, o) {
-              //  alert(o.responseText)
+                //  alert(o.responseText)
                 var r = JSON.parse(o.responseText);
 
                 if (r.state == 200) {
@@ -247,16 +246,17 @@ function api_request_progess(fork_key) {
 
 
 
-get_results(r.fork_key);
+                        get_results(r.fork_key);
 
 
 
 
                     } else if (r.fork_state == 'Cancelled') {
-	get_results(r.fork_key);
+                        get_results(r.fork_key);
                     } else if (r.fork_state == 'Finished') {
 
-						get_results(r.fork_key);
+                        get_results(r.fork_key);
+                         display_result_table('&fork_key='+r.fork_key);
                     }
 
 
@@ -277,7 +277,28 @@ get_results(r.fork_key);
 }
 
 
-Y.use("node", "json-stringify", "io-base", "uploader", "anim", function(Y) {
+function display_result_table(query){
+
+
+Y.one('#results_table').setStyle('display','block')
+
+ table.datasource.load({
+        request: query,
+
+        callback: {
+            success: function(e) {
+               
+                table.datasource.onDataReturnInitializeTable(e);
+            },
+            failure: function() {
+                Y.one('#results_table').setHTML('The data could not be retrieved.');
+            }
+        }
+    });
+
+}
+
+Y.use("node", "json-stringify", "io-base", "uploader", "anim","datatable", "datasource-get", "datasource-jsonschema", "datatable-datasource", function(Y) {
 
     Y.on("click", select_funder, '#funders_chooser .funder', null);
 
@@ -389,67 +410,77 @@ Y.use("node", "json-stringify", "io-base", "uploader", "anim", function(Y) {
     } else {
         alert("Sorry your browser is not supported")
     }
+    
+    
+    
+    var url = "ar_results.php?tipo=list_results",dataSource;
 
 
-});
-
-Y.use("datatable", "datasource-get", "datasource-jsonschema", "datatable-datasource", function (Y) {
+    dataSource = new Y.DataSource.Get({
+        source: url
+    });
 
    
-        
-       var url = "ar_results.php?tipo=list_results",
-        query = "&fork_key=" + encodeURIComponent('4'),
-        dataSource,
-        table; 
-      
-  
-    dataSource = new Y.DataSource.Get({ source: url });
-
-//alert(url+query)
-
     dataSource.plug(Y.Plugin.DataSourceJSONSchema, {
         schema: {
             resultListLocator: "query.results",
             resultFields: [
                 "query",
                 "journal",
+                "result",
                 "compilance",
                 "compilance_type",
                 "notes"
-            ]
+                ]
         }
     });
 
     table = new Y.DataTable({
         columns: [
-            {key:"query",label:"Query"},
-            {key:"journal",label:"Journal",allowHTML: true},
-            {key:"compilance",label:"Compilance"},
-            {key:"compilance_type",label:"Comp. Type"},
-            {key:"notes",label:"Notes"},
-
-        ],
-       
-    });
-    
-    table.plug(Y.Plugin.DataTableDataSource, { datasource: dataSource });
-
-    table.render("#pizza");
-
-    table.datasource.load({
-        request: query,
+            {
+            key: "query",
+            label: "Query",
+            width: '230px'
+        },
         
-        callback: { 
-            success: function (e) {
-            //for(x in e){
-            //alert(x+' '+e[x])
-            //}
-                table.datasource.onDataReturnInitializeTable(e);
-            },
-            failure: function() {
-                Y.one('#pizza').setHTML(
-                    'The data could not be retrieved. Please <a href="?mock=true">try this example with mocked data</a> instead.');
-            }
-        }
+         
+            {
+            key: "compilance",
+            label: "Compilance"
+        },
+            {
+            key: "compilance_type",
+            label: "Result",
+              width: '100px'
+        },
+           {
+            key: "journal",
+            label: "Journal",
+            allowHTML: true,
+             width: '350px'
+        },
+            {
+            key: "notes",
+            label: "Notes",
+            width: '435px'
+        },
+
+            ],
+
     });
+
+    table.plug(Y.Plugin.DataTableDataSource, {
+        datasource: dataSource
+    });
+
+    table.render("#results_table");
+
+  
+
+
 });
+
+
+
+
+

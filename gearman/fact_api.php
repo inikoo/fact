@@ -62,8 +62,8 @@ function call_fact_api($journal_data,$funders_data) {
 		'compilance_type'=>'None',
 		'compilance_report'=>'',
 		'journal'=>array('issn'=>'','title'=>'','publisher'=>''),
-		'gold'=>array('code'=>'','report'=>'','compilance'=>'','reason'=>'','advice'=>''),
-		'green'=>array('code'=>'','report'=>'','compilance'=>'','reason'=>'','advice'=>''),
+		'gold'=>array('code'=>'Unknown','report'=>'','compilance'=>'','reason'=>'','advice'=>''),
+		'green'=>array('code'=>'Unknown','report'=>'','compilance'=>'','reason'=>'','advice'=>''),
 	);
 
 	$api_url='http://www.sherpa.ac.uk/fact/api-beta.php';

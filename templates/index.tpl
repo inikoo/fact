@@ -79,17 +79,21 @@
 					<td id="total_no_compilant" rowspan="3"> </td>
 				</tr>
 				<tr>
-					<td>{t}Input Error{/t}</td>
+					<td>{t}Not Found{/t}</td>
 					<td id="error"></td>
 				</tr>
 				<tr>
 				</table>
 			</div>
-		</div>
-		
-	<div id="pizza">
+			
+			<div id="results_table" style="display:none">
 	
 	</div>
+			
+			
+		</div>
+		
+	
 		
 	</div>
 	{include file='footer.tpl'} 

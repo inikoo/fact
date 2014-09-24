@@ -51,8 +51,11 @@ function list_results($data) {
 		$journal=$row['Journal Name'].'<br> '.$row['Journal ISSN'];
 	
 		$compilance=$row['Compilance'];
+		if($row['Result Type']=='Error'){
+		$compilance_type=_('Not Found');
+		}else{
 		$compilance_type=$row['Compilance Type'];
-	
+	}
 		$results[]=array(
 			'query'=>$row['Query'],
 			'journal'=>$journal,
