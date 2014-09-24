@@ -34,7 +34,7 @@ $session = new Session($max_session_time);
 
 $user=identify_user();
 
-
+//print_r($user);
 
 
 include_once 'libs/Smarty/libs/Smarty.class.php';
@@ -92,11 +92,18 @@ $smarty->assign('analyticstracking',( file_exists('templates/analyticstracking.t
 function identify_user() {
 	
 	
-	
+	$user_key=0;
 
 	if (isset($_COOKIE["Fact_URT"])) {
 		$user=new User($_COOKIE["Fact_URT"]);
-	}else {
+		
+		//print_r($user);
+		
+		$user_key=$user->id;
+	}
+	
+	
+	if(!$user_key){
 	
 		$rnd=mt_rand().date('U');
 

@@ -2,10 +2,6 @@
 
 
 
-function auto_logout_timer() {
-    var t = setTimeout("auto_logout()", Dom.get('max_session_time_in_milliseconds'));
-
-}
 
 
 
@@ -39,38 +35,31 @@ var CURRENT_CONF = {
 
 var Y = YUI(CURRENT_CONF);
 
+function log_request(fork_key) {
 
-function change_block(e, arg) {
-
-
-    Y.all("#blocks .block").setStyle('display', 'none');
-    Y.one('#block_' + this.get('id')).setStyle('display', '');
-    Y.all("#chooser_ul .item").removeClass('selected');
-    this.addClass('selected');
-    Y.io('ar_sessions.php?tipo=update&keys=' + arg + '&value=' + this.get('id'), {});
-
-	post_change_block_actions(this);
-}
-
-function post_change_block_actions(o){};
-
-function get_history_element_numbers(subject, subject_key) {
-
-    request = 'ar_history.php?tipo=get_history_numbers&subject=' + subject + '&subject_key=' + subject_key
-
+    request = 'ar_log.php?tipo=log_request&url='+window.location+'&prev='+document.referrer
     Y.io(request, {
 
         on: {
             success: function(id, o) {
-                var r = Y.JSON.parse(o.responseText);
-                for (var key in r.elements_numbers) {
-                    Y.one('#elements_history_' + subject + '_' + key + '_number').set('innerHTML', r.elements_numbers[key])
+                var r = JSON.parse(o.responseText);
+
+                if (r.state == 200) {
+
+                  
+                } else {
+                    alert(r.msg);
                 }
+
 
             },
             failure: function(id, result) {}
         }
     });
 
-}
 
+
+
+
+
+}

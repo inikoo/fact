@@ -23,69 +23,71 @@ $js_files=array(
 
 
 $smarty->assign('parent','home');
-$smarty->assign('title', _('Home'));
+$smarty->assign('title', _('FACT API based Service'));
+$smarty->assign('header_title', '');
+
 
 
 $smarty->assign('css_files',$css_files);
 $smarty->assign('js_files',$js_files);
 
 $funders=array(
-'ahrc'=>array(
-'code'=>'ahrc',
-'name'=>'Arts & Humanities Research Council',
-'label'=>'AHRC',
-'label_class'=>'',
-'selected'=>'',
-),
-'bbsrc'=>array(
-'code'=>'bbsrc',
-'name'=>'Biotechnology and Biological Sciences Research Council',
-'label'=>'BBSRC',
-'label_class'=>'',
-'selected'=>'',
-),
-'epsrc'=>array(
-'code'=>'epsrc',
-'name'=>'Engineering and Physical Sciences Research Council',
-'label'=>'EPSRC',
-'label_class'=>'',
-'selected'=>'',
-),
-'esrc'=>array(
-'code'=>'esrc',
-'name'=>'Economic and Social Research Council',
-'label'=>'ESRC',
-'label_class'=>'',
-'selected'=>'',
-),
-'mrc'=>array(
-'code'=>'mrc',
-'name'=>'Medical Research Council',
-'label'=>'MRC',
-'label_class'=>'',
-'selected'=>'',
-),
-'nerc'=>array(
-'code'=>'nerc',
-'name'=>'Natural Environment Research Council',
-'label'=>'NERC',
-'label_class'=>'',
-'selected'=>'',
-),
-'stfc'=>array(
-'code'=>'stfc',
-'name'=>'Science & Technology Facilities Council',
-'label'=>'STFC',
-'label_class'=>'',
-'selected'=>'',
-),
-'wellcome_trust'=>array(
-'code'=>'wellcome_trust',
-'name'=>'Wellcome Trust',
-'label'=>'Wellcome <span style="font-size:80%">Trust</span>',
-'label_class'=>'small',
-'selected'=>'',
-),
+	'ahrc'=>array(
+		'code'=>'ahrc',
+		'name'=>'Arts & Humanities Research Council',
+		'label'=>'AHRC',
+		'label_class'=>'',
+		'selected'=>'',
+	),
+	'bbsrc'=>array(
+		'code'=>'bbsrc',
+		'name'=>'Biotechnology and Biological Sciences Research Council',
+		'label'=>'BBSRC',
+		'label_class'=>'',
+		'selected'=>'',
+	),
+	'epsrc'=>array(
+		'code'=>'epsrc',
+		'name'=>'Engineering and Physical Sciences Research Council',
+		'label'=>'EPSRC',
+		'label_class'=>'',
+		'selected'=>'',
+	),
+	'esrc'=>array(
+		'code'=>'esrc',
+		'name'=>'Economic and Social Research Council',
+		'label'=>'ESRC',
+		'label_class'=>'',
+		'selected'=>'',
+	),
+	'mrc'=>array(
+		'code'=>'mrc',
+		'name'=>'Medical Research Council',
+		'label'=>'MRC',
+		'label_class'=>'',
+		'selected'=>'',
+	),
+	'nerc'=>array(
+		'code'=>'nerc',
+		'name'=>'Natural Environment Research Council',
+		'label'=>'NERC',
+		'label_class'=>'',
+		'selected'=>'',
+	),
+	'stfc'=>array(
+		'code'=>'stfc',
+		'name'=>'Science & Technology Facilities Council',
+		'label'=>'STFC',
+		'label_class'=>'',
+		'selected'=>'',
+	),
+	'wellcome_trust'=>array(
+		'code'=>'wellcome_trust',
+		'name'=>'Wellcome Trust',
+		'label'=>'Wellcome <span style="font-size:80%">Trust</span>',
+		'label_class'=>'small',
+		'selected'=>'',
+	),
 );
 
 $smarty->assign('funders',$funders);
@@ -93,5 +95,5 @@ $smarty->assign('funders',$funders);
 
 
 $smarty->display('index.tpl');
-$user->log_request();
+
 ?>

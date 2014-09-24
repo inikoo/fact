@@ -22,6 +22,7 @@ class User  {
 		global $mysqli;
 		$this->mysqli=$mysqli;
 		$this->table_name='User';
+		$this->id=false;
 		$this->ignore_fields=array(
 			'User Key',
 			'User Last Login'
@@ -286,7 +287,9 @@ function get($key) {
 }
 
 
-function log_request() {
+function log_request($url,$prev) {
+
+
 
 
 	global $session;
@@ -294,8 +297,8 @@ function log_request() {
 		$this->id,
 		$session->data['Session Key'],
 		prepare_mysql(gmdate('Y-m-d H:i:s')),
-		prepare_mysql(full_url($_SERVER)),
-		prepare_mysql((isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'')),
+		prepare_mysql($url),
+		prepare_mysql($prev),
 		prepare_mysql(ip()),
 		prepare_mysql(get_user_os($_SERVER['HTTP_USER_AGENT'])),
 		prepare_mysql(get_user_browser($_SERVER['HTTP_USER_AGENT']))

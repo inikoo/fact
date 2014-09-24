@@ -278,6 +278,10 @@ function api_request_progess(fork_key) {
 }
 
 
+
+
+
+
 function display_result_table(query){
 
 
@@ -300,6 +304,9 @@ Y.one('#results_table').setStyle('display','block')
 }
 
 Y.use("node", "json-stringify", "io-base", "uploader", "anim","datatable", "datasource-get", "datasource-jsonschema", "datatable-datasource", function(Y) {
+
+
+	log_request();
 
     Y.on("click", select_funder, '#funders_chooser .funder', null);
 

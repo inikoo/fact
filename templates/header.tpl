@@ -15,10 +15,10 @@
 		<div class="presentation">
 			<a  href="index.php"><img id="logo" src="art/logo.png"></a>
 			<h1 style="margin-left:10px" >
-				FACT API based Service 
+				{t}FACT API based Service{/t} 
 			</h1>
 			<h2 id="main_title">
-				{$title}
+				{$header_title}
 			</h2>
 		</div>
 		<div class="left">
