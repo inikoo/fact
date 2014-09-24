@@ -398,7 +398,7 @@ Y.use("datatable", "datasource-get", "datasource-jsonschema", "datatable-datasou
    
         
        var url = "ar_results.php?tipo=list_results",
-        query = "&fork_key=" + encodeURIComponent('14'),
+        query = "&fork_key=" + encodeURIComponent('4'),
         dataSource,
         table; 
       
@@ -409,22 +409,27 @@ Y.use("datatable", "datasource-get", "datasource-jsonschema", "datatable-datasou
 
     dataSource.plug(Y.Plugin.DataSourceJSONSchema, {
         schema: {
-            resultListLocator: "query.results.Result",
+            resultListLocator: "query.results",
             resultFields: [
                 "query",
-                "journal"
+                "journal",
+                "compilance",
+                "compilance_type",
+                "notes"
             ]
         }
     });
 
     table = new Y.DataTable({
         columns: [
-            "query",
-            "journal"
-           
+            {key:"query",label:"Query"},
+            {key:"journal",label:"Journal",allowHTML: true},
+            {key:"compilance",label:"Compilance"},
+            {key:"compilance_type",label:"Comp. Type"},
+            {key:"notes",label:"Notes"},
+
         ],
-        summary: "Pizza places near 98089",
-        caption: "Table with JSON data from YQL"
+       
     });
     
     table.plug(Y.Plugin.DataTableDataSource, { datasource: dataSource });

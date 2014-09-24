@@ -60,10 +60,10 @@ function call_fact_api($journal_data,$funders_data) {
 		'resut_type'=>'Error',
 		'compilance'=>'No',
 		'compilance_type'=>'None',
+		'compilance_report'=>'',
 		'journal'=>array('issn'=>'','title'=>'','publisher'=>''),
-		'overall'=>array('code'=>'','report'=>'','compilance'=>''),
-		'gold'=>array('code'=>'','report'=>'','compilance'=>'','reason'=>''),
-		'green'=>array('code'=>'','report'=>'','compilance'=>''),
+		'gold'=>array('code'=>'','report'=>'','compilance'=>'','reason'=>'','advice'=>''),
+		'green'=>array('code'=>'','report'=>'','compilance'=>'','reason'=>'','advice'=>''),
 	);
 
 	$api_url='http://www.sherpa.ac.uk/fact/api-beta.php';
@@ -120,14 +120,12 @@ function parse_xml_result($result,$xml) {
 
 
 
-	$result['compilance']='No';
-	$result['compilance_type']='None';
+
 	if (isset($data['factapi']['gold']['goldcompliance'])) {
 
 		switch ($data['factapi']['gold']['goldcompliance']['@attributes']['goldcompliancecode']) {
 		case 'yes':
 			$result['gold']['code']='Yes';
-			$result['compilance']='Yes';
 			$result['compilance_type']='Gold';
 			break;
 		case 'no':
@@ -144,6 +142,16 @@ function parse_xml_result($result,$xml) {
 		}
 		$result['gold']['report']=$data['factapi']['gold']['goldcompliance']['@attributes']['goldcompliancereport'];
 
+	$result['gold']['reason']=$data['factapi']['gold']['goldreason'];
+		
+
+
+		if(isset($data['factapi']['gold']['goldadvicelist']['goldadvice']['@value'])){
+			
+			$result['gold']['advice']=$data['factapi']['gold']['goldadvicelist']['greenadvice']['@value'];
+			
+		
+		}
 
 	}
 
@@ -153,14 +161,10 @@ function parse_xml_result($result,$xml) {
 		case 'yes':
 			$result['green']['code']='Yes';
 
-
-
-			if ($result['compilance']=='Yes') {
+			if ($result['compilance_type']=='Gold')
 				$result['compilance_type']='GreenGold';
-			}else {
+			else
 				$result['compilance_type']='Green';
-			}
-			$result['compilance']='Yes';
 
 
 			break;
@@ -178,9 +182,44 @@ function parse_xml_result($result,$xml) {
 		}
 		$result['green']['report']=$data['factapi']['green']['greencompliance']['@attributes']['greencompliancereport'];
 
+		$result['green']['reason']=$data['factapi']['green']['greenreason'];
+		
+
+
+		if(isset($data['factapi']['green']['greenadvicelist']['greenadvice']['@value'])){
+			
+			$result['green']['advice']=$data['factapi']['green']['greenadvicelist']['greenadvice']['@value'];
+			
+		
+		}
+
 
 	}
 
+
+	if (isset($data['factapi']['overall']['overallcompliance'])) {
+
+		switch ($data['factapi']['overall']['overallcompliance']['@attributes']['overallcompliancecode']) {
+		case 'yes':
+			$result['compilance']='Yes';
+
+			break;
+		case 'no':
+			$result['compilance']='No';
+			break;
+		case 'maybe':
+			$result['compilance']='Maybe';
+			break;
+		case 'unknown':
+			$result['compilance']='Unknown';
+			break;
+		default:
+			$result['compilance']=$data['factapi']['overall']['overallcompliance']['@attributes']['goldcompliancecode'];
+		}
+		$result['compilance_report']=$data['factapi']['overall']['overallcompliance']['@attributes']['overallcompliancereport'];
+
+
+	}
 
 	return $result;
 
@@ -195,11 +234,13 @@ function save_result_to_db($fork_key,$result) {
 	$sql=sprintf("insert into `Result Dimension` (
 	`Date`,`Fork Key`,`Result Type`,`Query`,`Journal ISSN`,`Journal Name`,
 	`Compilance`,`Compilance Type`,
-	`Gold Compilance Code`,`Gold Compilance Report`,`Green Compilance Code`,`Green Compilance Report`
+	`Gold Compilance Code`,`Gold Compilance Report`,`Gold Compilance Reason`,`Gold Compilance Advice`,
+	`Green Compilance Code`,`Green Compilance Report`,`Green Compilance Reason`,`Green Compilance Advice`
 	)
 	values (
 	NOW(),%d,%s,%s,%s,%s,
 	%s,%s,
+	%s,%s,%s,%s,
 	%s,%s,%s,%s
 	)",
 
@@ -212,10 +253,14 @@ function save_result_to_db($fork_key,$result) {
 		prepare_mysql($result['compilance_type']),
 		prepare_mysql($result['gold']['code']),
 		prepare_mysql($result['gold']['report']),
+		prepare_mysql($result['gold']['reason']),
+		prepare_mysql($result['gold']['advice']),
 		prepare_mysql($result['green']['code']),
-		prepare_mysql($result['green']['report'])
+		prepare_mysql($result['green']['report']),
+		prepare_mysql($result['green']['reason']),
+		prepare_mysql($result['green']['advice'])
 	);
-//print $sql;
+	//print $sql;
 	$mysqli->query($sql);
 
 }

@@ -25,7 +25,7 @@ case('get_results'):
 		));
 	get_results($data);
 	break;
-case('list_results'):	
+case('list_results'):
 	$data=prepare_values($_REQUEST,array(
 			'fork_key'=>array('type'=>'key'),
 			'callback'=>array('type'=>'string')
@@ -39,21 +39,35 @@ default:
 }
 
 
-function list_results($data){
+function list_results($data) {
+	global $mysqli;
+	$fork_key=$data['fork_key'];
 
-$fork_key=$data['fork_key'];
+	$sql=sprintf("select * from `Result Dimension` where `Fork Key`=%d",$fork_key);
+	$res=$mysqli->query($sql);
+	$results=array();
+	while ($row=$res->fetch_assoc()) {
+	
+		$journal=$row['Journal Name'].'<br> '.$row['Journal ISSN'];
+	
+		$compilance=$row['Compilance'];
+		$compilance_type=$row['Compilance Type'];
+	
+		$results[]=array(
+			'query'=>$row['Query'],
+			'journal'=>$journal,
+			'compilance'=>$compilance,
+			'compilance_type'=>$compilance_type
+		);
+	}
 
-$results=array('Result'=>
-array(
-array('Title'=>'xx','journal'=>'yy'),
-array('Title'=>'xx2','journal'=>'yy2')
-));
 
 
 
 
-$response=array('query'=>array('xx'=>'xx','results'=>$results));
-header('Content-Type: application/json');
+
+	$response=array('query'=>array('results'=>$results));
+	header('Content-Type: application/json');
 	echo $data['callback'].'('.json_encode($response).');';
 
 }
@@ -61,9 +75,9 @@ header('Content-Type: application/json');
 function get_results($data) {
 
 	global $mysqli;
-	
+
 	$fork_key=$data['fork_key'];
-	
+
 
 	$result_data=array(
 		'compilant'=>0,
@@ -95,7 +109,7 @@ function get_results($data) {
 			$result_data['compilant']=number($row['number']);
 		}elseif ($row['Compilance']=='No') {
 			$result_data['no_compilant']=number($row['number']);
-						$result_data['total_no_compilant']+=$row['number'];
+			$result_data['total_no_compilant']+=$row['number'];
 
 		}
 	}
