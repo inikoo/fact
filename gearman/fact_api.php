@@ -101,13 +101,13 @@ function parse_xml_result($result,$xml) {
 
 
 	$data=XML2Array::createArray($xml);
-
-	//print_r($data);
-
-
+	//print_r($xml);
+//	print_r($data['factapi']);
 
 
-	if (isset($data['factapi']['journallist']['journal'])) {
+
+
+	if (isset($data['factapi']['control']['num_journals']) and $data['factapi']['control']['num_journals']==1) {
 
 		$result['journal']['issn']=$data['factapi']['journallist']['journal']['@attributes']['issn'];
 		$result['journal']['title']=$data['factapi']['journallist']['journal']['title'];
@@ -142,15 +142,21 @@ function parse_xml_result($result,$xml) {
 		}
 		$result['gold']['report']=$data['factapi']['gold']['goldcompliance']['@attributes']['goldcompliancereport'];
 
-	$result['gold']['reason']=$data['factapi']['gold']['goldreason'];
-		
+
+		if (is_array($data['factapi']['gold']['goldreason']) and isset($data['factapi']['gold']['goldreason']['@value'])) {
+			$result['gold']['reason']=$data['factapi']['gold']['goldreason']['@value'];
+		}else {
+			$result['gold']['reason']=$data['factapi']['gold']['goldreason'];
+		}
 
 
-		if(isset($data['factapi']['gold']['goldadvicelist']['goldadvice']['@value'])){
-			
-			$result['gold']['advice']=$data['factapi']['gold']['goldadvicelist']['greenadvice']['@value'];
-			
-		
+
+
+		if (isset($data['factapi']['gold']['goldadvicelist']['goldadvice']['@value'])) {
+
+			$result['gold']['advice']=$data['factapi']['gold']['goldadvicelist']['goldadvice']['@value'];
+
+
 		}
 
 	}
@@ -182,15 +188,19 @@ function parse_xml_result($result,$xml) {
 		}
 		$result['green']['report']=$data['factapi']['green']['greencompliance']['@attributes']['greencompliancereport'];
 
-		$result['green']['reason']=$data['factapi']['green']['greenreason'];
-		
+			if (is_array($data['factapi']['green']['greenreason']) and isset($data['factapi']['green']['greenreason']['@value'])) {
+			$result['green']['reason']=$data['factapi']['green']['greenreason']['@value'];
+		}else {
+			$result['green']['reason']=$data['factapi']['green']['greenreason'];
+		}
 
 
-		if(isset($data['factapi']['green']['greenadvicelist']['greenadvice']['@value'])){
-			
+
+		if (isset($data['factapi']['green']['greenadvicelist']['greenadvice']['@value'])) {
+
 			$result['green']['advice']=$data['factapi']['green']['greenadvicelist']['greenadvice']['@value'];
-			
-		
+
+
 		}
 
 
@@ -229,7 +239,7 @@ function parse_xml_result($result,$xml) {
 function save_result_to_db($fork_key,$result) {
 	global $mysqli;
 
-
+//print_r($result);
 
 	$sql=sprintf("insert into `Result Dimension` (
 	`Date`,`Fork Key`,`Result Type`,`Query`,`Journal ISSN`,`Journal Name`,

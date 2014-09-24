@@ -42,11 +42,11 @@ if (isset($_FILES['Filedata'])) {
 		$filezise=filesize($file_data['tmp_name']);
 
 
-		$sql=sprintf("select `Upload Key` from `Upload Dimension` where `Upload Checksum`=%s and `Upload User Key`=%d ",
+		$sql=sprintf("select `Upload Key` from `Upload Dimension` where `Upload Checksum`=%s and `Upload User Key`=%d and `Upload Status`='Uploaded' ",
 			prepare_mysql($checksum),
 			$user->id
 		);
-		$mysqli->query(sprintf("insert into debug (message) values(%s)",prepare_mysql($sql)));
+		//$mysqli->query(sprintf("insert into debug (message) values(%s)",prepare_mysql($sql)));
 
 		$res=$mysqli->query($sql);
 		if ($row=$res->fetch_assoc()) {

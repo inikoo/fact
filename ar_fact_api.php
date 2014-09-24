@@ -33,7 +33,7 @@ case('lookup_from_string'):
 case('lookup_from_file'):
 	$data=prepare_values($_REQUEST,array(
 			'funders'=>array('type'=>'json array'),
-			'file'=>array('type'=>'string'),
+			'upload_key'=>array('type'=>'key'),
 		));
 	lookup_from_file($data);
 	break;
@@ -41,6 +41,109 @@ case('lookup_from_file'):
 default:
 	$response=array('state'=>404,'msg'=>'Operation not found');
 	echo json_encode($response);
+
+}
+
+
+function lookup_from_file($data) {
+	global $mysqli;
+
+	$upload_key=$data['upload_key'];
+
+
+	$sql=sprintf("select `Upload Content` from `Upload Content Dimension` where `Upload Key`=%d",$upload_key);
+	$res=$mysqli->query($sql);
+	if ($row=$res->fetch_assoc()) {
+		$content=$row['Upload Content'];
+	}else {
+		$response= array(
+			'state'=>400,'msg'=>'Error file content not found'
+		);
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		return;
+	}
+
+
+	$file_type='csv';
+
+	$sql=sprintf("select `Upload File Type` from `Upload Dimension` where `Upload Key`=%d",$upload_key);
+	$res=$mysqli->query($sql);
+	if ($row=$res->fetch_assoc()) {
+		switch ($row['Upload File Type']) {
+		case 'application/csv':
+		case 'text/csv':
+		case 'text/tsv':
+		case 'text/plain':
+
+			$file_type='csv';
+		}
+
+	}
+
+
+
+	switch ($file_type) {
+	case 'csv':
+
+
+		$fp = tmpfile();
+		fwrite($fp, $content);
+		rewind($fp);
+
+		$journals=array();
+		while (!feof($fp)) {
+			$tmp = fgetcsv($fp);
+			$journals[]=$tmp[0];
+		}
+
+
+
+		fclose($fp);
+
+
+
+		break;
+	default:
+		$response= array(
+			'state'=>400,'msg'=>_('Can not read file contents')
+		);
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		return;
+
+	}
+
+
+
+
+	$funders=parse_funders($data['funders']);
+
+	$journals=parse_journals($journals);
+
+	$request_data=array();
+	foreach ($journals as $journal) {
+		$request_data[]=array('journal_data'=>$journal,'funders_data'=>$funders);
+	}
+	$request_data=json_encode($request_data);
+
+	list($fork_key,$msg)=new_fork('fact_api_request',$request_data,$account_code='FACT');
+
+	$sql=sprintf("update `Upload Dimension`set `Upload Status`='Processed',`Processed Date`=%s where `Upload Key`=%d",
+	prepare_mysql(gmdate('Y-m-d H:i:s')),
+	$upload_key);
+	$mysqli->query($sql);
+
+	$sql=sprintf("delete from `Upload Content Dimension` where `Upload Key`=%d",$upload_key);
+	$mysqli->query($sql);
+
+
+	$response= array(
+		'state'=>200,'fork_key'=>$fork_key,'msg'=>$msg
+	);
+	header('Content-Type: application/json');
+	echo json_encode($response);
+
 
 }
 
@@ -56,7 +159,7 @@ function lookup_from_string($data) {
 		$request_data[]=array('journal_data'=>$journal,'funders_data'=>$funders);
 	}
 	$request_data=json_encode($request_data);
-	
+
 	list($fork_key,$msg)=new_fork('fact_api_request',$request_data,$account_code='FACT');
 
 
@@ -64,9 +167,10 @@ function lookup_from_string($data) {
 	$response= array(
 		'state'=>200,'fork_key'=>$fork_key,'msg'=>$msg
 	);
+	header('Content-Type: application/json');
 	echo json_encode($response);
-	
-	
+
+
 }
 
 
@@ -122,5 +226,3 @@ function parse_funders($funders) {
 	return $parsed_funders;
 
 }
-
-

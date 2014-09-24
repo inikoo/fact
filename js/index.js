@@ -101,6 +101,7 @@ function submit() {
         } else {
             var request = 'ar_fact_api.php?tipo=lookup_from_file&funders=' + encodeURIComponent(Y.JSON.stringify(selected_funders)) + '&upload_key=' + encodeURIComponent(Y.one('#upload_key').get('value'));
 
+
         }
 
         //close_select_funders.run()
@@ -462,6 +463,7 @@ Y.use("node", "json-stringify", "io-base", "uploader", "anim","datatable", "data
             {
             key: "notes",
             label: "Notes",
+              allowHTML: true,
             width: '435px'
         },
 
