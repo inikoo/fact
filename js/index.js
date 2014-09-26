@@ -25,18 +25,18 @@ function select_funder() {
         Y.one('#choose_funders').removeClass('error')
 
         if (Y.one('#journals').get('value') == '' && Y.one('#upload_key').get('value') == 0) {
-            Y.one('#submit').set('innerHTML', 'Input Journals')
+            Y.one('#submit').set('innerHTML', Y.one('#select_journals_label').get('value'))
 
         } else {
-            Y.one('#submit').set('innerHTML', 'Find Compilance')
+            Y.one('#submit').set('innerHTML', Y.one('#submit_label').get('value'))
         }
 
     } else {
         if (Y.one('#journals').get('value') == '' && Y.one('#upload_key').get('value') == 0) {
-            Y.one('#submit').set('innerHTML', 'Select Funders & Input Journals')
+            Y.one('#submit').set('innerHTML', Y.one('#select_funders_and_journals_label').get('value'))
 
         } else {
-            Y.one('#submit').set('innerHTML', 'Select Funders')
+            Y.one('#submit').set('innerHTML', Y.one('#select_funders_label').get('value'))
         }
 
     }
@@ -51,24 +51,24 @@ function journals_changed() {
     Y.one('#journals_input_method').set('value', 'input')
     Y.one('#journals_input_method_file').setStyle('opacity', .2)
     Y.one('#journals_input_method_input').setStyle('opacity', 1)
-                Y.one('#select_files_container div button').set('innerHTML', Y.one('#upload_file_label').get('value'))
+    Y.one('#select_files_container div button').set('innerHTML', Y.one('#upload_file_label').get('value'))
 
     if (Y.one('#journals').get('value') == '') {
 
         if (Y.one('#number_selected_funders').get('value') == 0) {
-            Y.one('#submit').set('innerHTML', 'Select Funders & Input Journals')
+            Y.one('#submit').set('innerHTML', Y.one('#select_funders_and_journals_label').get('value'))
 
         } else {
-            Y.one('#submit').set('innerHTML', 'Input Journals')
+            Y.one('#submit').set('innerHTML', Y.one('#select_journals_label').get('value'))
 
         }
 
     } else {
         if (Y.one('#number_selected_funders').get('value') == 0) {
-            Y.one('#submit').set('innerHTML', 'Select Funders')
+            Y.one('#submit').set('innerHTML', Y.one('#select_funders_label').get('value'))
 
         } else {
-            Y.one('#submit').set('innerHTML', 'Find Compilance')
+            Y.one('#submit').set('innerHTML', Y.one('#submit_label').get('value'))
 
         }
     }
@@ -213,14 +213,7 @@ function api_request_progess(fork_key) {
                         setTimeout(function() {
                             api_request_progess(r.fork_key)
                         }, 1000);
-
-
-
                         get_results(r.fork_key);
-
-
-
-
                     } else if (r.fork_state == 'Cancelled') {
                         get_results(r.fork_key);
                     } else if (r.fork_state == 'Finished') {
@@ -228,8 +221,6 @@ function api_request_progess(fork_key) {
                         get_results(r.fork_key);
                         display_result_table('&fork_key=' + r.fork_key);
                     }
-
-
                 } else {
                     alert(r.msg);
                 }
@@ -239,11 +230,6 @@ function api_request_progess(fork_key) {
             failure: function(id, result) {}
         }
     });
-
-
-
-
-
 }
 
 function display_result_table(query) {
@@ -260,7 +246,7 @@ function display_result_table(query) {
                 table.datasource.onDataReturnInitializeTable(e);
             },
             failure: function() {
-                Y.one('#results_table').setHTML('The data could not be retrieved.');
+                Y.one('#results_table').setHTML(Y.one('table_error1_label'));
             }
         }
     });
@@ -285,11 +271,11 @@ Y.use("node", "json-stringify", "io-base", "uploader", "datatable", "datasource-
     if (Y.Uploader.TYPE != "none") {
         var uploader = new Y.Uploader({
             width: "450px",
-           height: "50px",
+            height: "50px",
             selectButtonLabel: Y.one('#upload_file_label').get('value'),
-            selectFilesButton: Y.Node.create('<button id="select_files" class="input" >'+Y.one('#upload_file_label').get('value')+'</button>')
-            
-            
+            selectFilesButton: Y.Node.create('<button id="select_files" class="input" >' + Y.one('#upload_file_label').get('value') + '</button>')
+
+
         }).render("#select_files_container");
 
         uploader.after("fileselect", function(event) {
@@ -316,10 +302,10 @@ Y.use("node", "json-stringify", "io-base", "uploader", "datatable", "datasource-
 
 
                 if (Y.one('#number_selected_funders').get('value') == 0) {
-                    Y.one('#submit').set('innerHTML', 'Select Funders')
+                    Y.one('#submit').set('innerHTML', Y.one('#select_funders_label').get('value'))
 
                 } else {
-                    Y.one('#submit').set('innerHTML', 'Find Compilance')
+                    Y.one('#submit').set('innerHTML', Y.one('#submit_label').get('value'))
 
                 }
 
@@ -330,10 +316,10 @@ Y.use("node", "json-stringify", "io-base", "uploader", "datatable", "datasource-
             } else {
 
                 if (Y.one('#number_selected_funders').get('value') == 0) {
-                    Y.one('#submit').set('innerHTML', 'Select Funders & Input Journals')
+                    Y.one('#submit').set('innerHTML', Y.one('#select_funders_and_journals_label').get('value'))
 
                 } else {
-                    Y.one('#submit').set('innerHTML', 'Input Journals')
+                    Y.one('#submit').set('innerHTML', Y.one('#select_journals_label').get('value'))
                 }
 
 
@@ -347,7 +333,7 @@ Y.use("node", "json-stringify", "io-base", "uploader", "datatable", "datasource-
 
 
     } else {
-        alert("Sorry your browser is not supported")
+        alert(Y.one('#uploader_error1_label').get('value'))
     }
 
 
@@ -379,12 +365,12 @@ Y.use("node", "json-stringify", "io-base", "uploader", "datatable", "datasource-
         columns: [
             {
             key: "query",
-            label: "Query",
+            label: Y.one('#th_query_label').get('value'),
             width: '230px'
         },
             {
             key: "journal",
-            label: "Journal",
+            label: Y.one('#th_journal_label').get('value'),
             allowHTML: true,
             width: '350px'
         },
@@ -392,16 +378,16 @@ Y.use("node", "json-stringify", "io-base", "uploader", "datatable", "datasource-
 
             {
             key: "compilance",
-            label: "Compilance"
+            label: Y.one('#th_compilance_label').get('value')
         },
             {
             key: "compilance_type",
-            label: "Result",
+            label: Y.one('#th_result_label').get('value'),
             width: '100px'
         },
             {
             key: "notes",
-            label: "Notes",
+            label: Y.one('#th_notes_label').get('value'),
             allowHTML: true,
             width: '435px'
         },

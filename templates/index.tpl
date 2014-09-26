@@ -8,7 +8,15 @@
 		<input type="hidden" id="select_journals_label" value="{t}Input Journals{/t}"> 
 		<input type="hidden" id="select_funders_label" value="{t}Select Funders{/t}"> 
 		<input type="hidden" id="submit_label" value="{t}Find Compilance{/t}"> 
+		<input type="hidden" id="th_query_label" value="{t}Query{/t}"> 
+		<input type="hidden" id="th_journal_label" value="{t}Journal{/t}"> 
+		<input type="hidden" id="th_compilance_label" value="{t}Compilance{/t}"> 
+		<input type="hidden" id="th_result_label" value="{t}Result{/t}"> 
+		<input type="hidden" id="th_notes_label" value="{t}Notes{/t}"> 
+		<input type="hidden" id="table_error1_label" value="{t}Sorry, the results could not be retreived{/t}"> 
+		<input type="hidden" id="uploader_error1_label" value="{t}Sorry your browser is not supported{/t}"> 
 
+	
 	
 	
 	<div id="choose_funders" class="block">
