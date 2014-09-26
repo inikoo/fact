@@ -61,17 +61,9 @@ $args="?";
 foreach ($_GET as $key => $value) {
 	if ($key!='_locale')$args.=$key.'='.$value.'&';
 }
-$lang_menu=array();
 
 
-$sql=sprintf("select * from `Language Dimension`");
-$res=$mysqli->query($sql);
-while ($row=$res->fetch_assoc()) {
-	$_locale=$row['Language Code'].'_'.$row['Country 2 Alpha Code'].'.UTF-8';
-	$lang_menu[]=array($_SERVER['PHP_SELF'].$args.'_locale='.$_locale,strtolower($row['Country 2 Alpha Code']),$row['Language Original Name']);
-}
 
-$smarty->assign('lang_menu',$lang_menu);
 $smarty->assign('timezone',date("e P"));
 
 

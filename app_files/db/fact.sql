@@ -54,33 +54,6 @@ LOCK TABLES `Fork Dimension` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `Language Dimension`
---
-
-DROP TABLE IF EXISTS `Language Dimension`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Language Dimension` (
-  `Language Key` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  `Language Code` varchar(5) NOT NULL,
-  `Country 2 Alpha Code` varchar(2) DEFAULT NULL,
-  `Language Name` varchar(60) NOT NULL,
-  `Language Original Name` varchar(60) NOT NULL,
-  PRIMARY KEY (`Language Key`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Language Dimension`
---
-
-LOCK TABLES `Language Dimension` WRITE;
-/*!40000 ALTER TABLE `Language Dimension` DISABLE KEYS */;
-INSERT INTO `Language Dimension` VALUES (1,'en','GB','English','English'),(2,'es','ES','Spanish','Español'),(3,'de','DE','German','Deutsch'),(4,'fr','FR','French','Français'),(5,'cs','CZ','Czech','čeština'),(6,'sk','SK','Slovak','Slovenčina'),(7,'zh','CN','Chinese','中文'),(8,'pl','PL','Polish','Język Polski'),(9,'it','IT','Italian','Italiano');
-/*!40000 ALTER TABLE `Language Dimension` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `Result Dimension`
 --
 
@@ -153,31 +126,6 @@ CREATE TABLE `Session Dimension` (
 LOCK TABLES `Session Dimension` WRITE;
 /*!40000 ALTER TABLE `Session Dimension` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Session Dimension` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `Theme Dimension`
---
-
-DROP TABLE IF EXISTS `Theme Dimension`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Theme Dimension` (
-  `Theme Key` int(11) NOT NULL AUTO_INCREMENT,
-  `Theme Code` varchar(16) NOT NULL,
-  `Theme Name` varchar(255) NOT NULL,
-  PRIMARY KEY (`Theme Key`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Theme Dimension`
---
-
-LOCK TABLES `Theme Dimension` WRITE;
-/*!40000 ALTER TABLE `Theme Dimension` DISABLE KEYS */;
-INSERT INTO `Theme Dimension` VALUES (1,'clear','Clear Purple');
-/*!40000 ALTER TABLE `Theme Dimension` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -322,30 +270,6 @@ LOCK TABLES `User Request Dimension` WRITE;
 /*!40000 ALTER TABLE `User Request Dimension` DISABLE KEYS */;
 /*!40000 ALTER TABLE `User Request Dimension` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `debug`
---
-
-DROP TABLE IF EXISTS `debug`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `debug` (
-  `key` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `message` text NOT NULL,
-  PRIMARY KEY (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `debug`
---
-
-LOCK TABLES `debug` WRITE;
-/*!40000 ALTER TABLE `debug` DISABLE KEYS */;
-/*!40000 ALTER TABLE `debug` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -356,4 +280,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-09-24 13:49:39
+-- Dump completed on 2014-09-25 17:12:11

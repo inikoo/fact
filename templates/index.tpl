@@ -4,6 +4,13 @@
 	<input type="hidden" id="upload_key" value="0"> 
 	<input type="hidden" id="number_selected_funders" value="0"> 
 	<input type="hidden" id="upload_file_label" value="{t}Upload file{/t}"> 
+	<input type="hidden" id="select_funders_and_journals_label" value="{t}Select Funders & Input Journals{/t}"> 
+		<input type="hidden" id="select_journals_label" value="{t}Input Journals{/t}"> 
+		<input type="hidden" id="select_funders_label" value="{t}Select Funders{/t}"> 
+		<input type="hidden" id="submit_label" value="{t}Find Compilance{/t}"> 
+
+	
+	
 	<div id="choose_funders" class="block">
 		<div class="title">
 			<h1>
@@ -12,7 +19,7 @@
 		</div>
 		<div id="funders_chooser">
 			{foreach from=$funders item=funder name=funders} 
-			<div id="funder_{$funder.code}" class="funder {if $smarty.foreach.funders.first}first{/if} {if $funder.selected}selected{/if}" title="{$funder.name}" code="{$funder.code}">
+			<div id="funder_{$funder.code}" class="funder {if $smarty.foreach.funders.last}last{/if} {if $funder.selected}selected{/if}" title="{$funder.name}" code="{$funder.code}">
 				<img class="logo" src="art/{$funder.code}.png" /> <br />
 				<img id="funder_checkbox_{$funder.code}" src="art/{if $funder.selected}checkbox_checked{else}checkbox_unchecked{/if}.png" /> <span class="{$funder.label_class}">{$funder.label}</span> 
 			</div>
@@ -27,29 +34,29 @@
 				2. {t}Input journals{/t} 
 			</h1>
 		</div>
-		<div id="journal_input_container" style="text-align:center">
-			<table style="margin:0px auto;width:870px">
-				<tr>
-					<td id="journals_input_method_input"> 
-					<div style="font-size:70%;width:350px;margin-bottom:5px">
-						ISSN or Jornal's names separated by commas 
-					</div>
-					<input style="float:left;width:350px" id="journals" />
-					</td>
-					<td style="padding:10px 20px;"> <span style="font-size:120%;position:relative;top:5px">or</span> </td>
-					<td id="journals_input_method_file"> 
-					<div style="font-size:70%;width:400px;margin-bottom:5px">
-						{t}One column CVS file with ISSNs or Jornal's names{/t} 
-					</div>
-					<div id="uploaderContainerID" style="width:400px;">
-					</div>
-					</td>
-				</tr>
-			</table>
+		<div id="journal_input_container" >
+			<div id="journals_input_method_input" class="journal_sources" >
+				<div class="instructons">
+					{t}ISSN or Jornal names separated by commas{/t} 
+				</div>
+				<div id="input_container">
+					<input id="journals" class="input" style="height:28px" />
+				</div>
+			</div>
+			<span style="padding:10px" >or</span>
+			<div id="journals_input_method_file" class="journal_sources">
+				<div class="instructons">
+					{t}One column CVS/Excel file with ISSNs or Jornal names{/t} 
+				</div>
+				<div id="select_files_container">
+				</div>
+				<div style="clear:both">
+				</div>
+			</div>
 		</div>
 	</div>
 	<div id="submit_query">
-		<span id="submit" class="button" style="width:400px;margin-top:60px;font-size:150%;height:30px">{t}Select Funders & Input Journals{/t}</span> 
+		<button id="submit">{t}Select Funders & Input Journals{/t}</button> 
 	</div>
 	<div id="progress_bar" style="display:none;text-align:center;padding:20px">
 		<div id="progress_status">
@@ -82,18 +89,10 @@
 					<td>{t}Not Found{/t}</td>
 					<td id="error"></td>
 				</tr>
-				<tr>
-				</table>
-			</div>
-			
-			<div id="results_table" style="display:none">
-	
-	</div>
-			
-			
+			</table>
 		</div>
-		
-	
-		
+		<div id="results_table" style="display:none">
+		</div>
 	</div>
-	{include file='footer.tpl'} 
+</div>
+{include file='footer.tpl'} 

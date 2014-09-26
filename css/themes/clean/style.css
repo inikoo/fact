@@ -40,22 +40,41 @@ a,table,button,tbody{outline: none;}
 
 
 
-#bd{background-color:#f6f6f6;padding:15px 40px 100px 40px;border-bottom: 1px solid rgba(255,255,255,.3)}
+#bd{background-color:#f6f6f6;padding:15px 0px 100px 0px;border-bottom: 1px solid rgba(255,255,255,.3)}
 #bd_header{padding:0px 20px;;min-height: 30px;}
 
 #bd h1{font-size:120%;}
-.block{padding:20px;border-bottom:1px dashed #ccc}
+.block{padding:0px;;margin-top:20px;}
 .block.warning{border:1px solid red;}
 .title{text-align:center;padding-bottom:20px;}
 
-#funders_chooser,#journal_input_container{margin: 0px auto;width:870px;}
-.funder{text-align:center;float:left;margin-left:20px;cursor:pointer}
-.funder.first{margin-left:0px}
-.funder .small{font-size:75%;position:relative;top:-2px}
+#funders_chooser{padding-bottom:10px;border-bottom:1px dashed #ccc}
+
+#funders_chooser,#journal_input_container,#submit_query{margin: 0px auto;
+text-align:center;
+}
+.funder{text-align:center;margin-right:20px;cursor:pointer;width:90px;
+display:inline-block;  margin-bottom:10px
+
+}
+
+.journal_sources{width:450px;display:inline-block;height:70px}
+
+.instructons{font-size:70%;width:100%;margin-bottom:5px}
+
+
+
+.funder.last{margin-right:0px}
+.funder .small{font-size:60%;position:relative;top:-3px}
 
 .funder .logo{border:1px solid #ccc;height:60px}
 
-input{padding:10px;font-size:100%}
+.input{background-color:#fff;border:1px solid #ccc}
+
+#select_files{width:420px;padding:0px;font-size:100%}
+#journals{width:420px;padding:10px;font-size:100%;height:21px}
+
+#submit{width:400px;margin-top:60px;font-size:100%;padding:10px 0px;border:2px solid #56433b;color:#fff;background-color:#716058}
 
 #results_overview td{padding:3px 20px 2px 20px;}
 #results_overview td{border-top:1px solid #ccc}

@@ -84,7 +84,7 @@ $funders=array(
 	'wellcome_trust'=>array(
 		'code'=>'wellcome_trust',
 		'name'=>'Wellcome Trust',
-		'label'=>'Wellcome <span style="font-size:80%">Trust</span>',
+		'label'=>'Wellcome <span style="font-size:70%">Trust</span>',
 		'label_class'=>'small',
 		'selected'=>'',
 	),

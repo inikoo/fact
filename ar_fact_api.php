@@ -48,6 +48,9 @@ default:
 function lookup_from_file($data) {
 	global $mysqli;
 
+include 'libs/PHPExcel/Classes/PHPExcel/IOFactory.php';
+
+
 	$upload_key=$data['upload_key'];
 
 
@@ -64,6 +67,26 @@ function lookup_from_file($data) {
 		return;
 	}
 
+
+$fp = tmpfile();
+		fwrite($fp, $content);
+		rewind($fp);
+		$metaDatas = stream_get_meta_data($fp);
+$tmpFilename = $metaDatas['uri'];
+		
+$objPHPExcel = PHPExcel_IOFactory::load($tmpFilename);
+$sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
+//print_r($sheetData);
+
+
+
+foreach($sheetData as $row){
+	if(isset($row['A']) and $row['A']!='' ){
+	$journals[]=$row['A'];
+	}
+}
+
+/*
 
 	$file_type='csv';
 
@@ -116,6 +139,9 @@ function lookup_from_file($data) {
 
 
 
+print_r($journals);
+exit;
+*/
 
 	$funders=parse_funders($data['funders']);
 
@@ -127,6 +153,12 @@ function lookup_from_file($data) {
 	}
 	$request_data=json_encode($request_data);
 
+
+
+
+
+
+
 	list($fork_key,$msg)=new_fork('fact_api_request',$request_data,$account_code='FACT');
 
 	$sql=sprintf("update `Upload Dimension`set `Upload Status`='Processed',`Processed Date`=%s where `Upload Key`=%d",
@@ -135,7 +167,7 @@ function lookup_from_file($data) {
 	$mysqli->query($sql);
 
 	$sql=sprintf("delete from `Upload Content Dimension` where `Upload Key`=%d",$upload_key);
-	$mysqli->query($sql);
+	//$mysqli->query($sql);
 
 
 	$response= array(

@@ -45,14 +45,13 @@ function select_funder() {
 
 }
 
-
-
 function journals_changed() {
 
     Y.one('#upload_key').set('value', 0)
     Y.one('#journals_input_method').set('value', 'input')
     Y.one('#journals_input_method_file').setStyle('opacity', .2)
     Y.one('#journals_input_method_input').setStyle('opacity', 1)
+                Y.one('#select_files_container div button').set('innerHTML', Y.one('#upload_file_label').get('value'))
 
     if (Y.one('#journals').get('value') == '') {
 
@@ -74,8 +73,6 @@ function journals_changed() {
         }
     }
 }
-
-
 
 function submit() {
 
@@ -104,9 +101,6 @@ function submit() {
 
         }
 
-        //close_select_funders.run()
-        //close_input_journals.run()
-        //close_submit_query.run()
         Y.io(request, {
 
             on: {
@@ -134,29 +128,6 @@ function submit() {
         });
 
 
-/*
-        Y.on('io:complete', function(id, o, args) {
-          //  alert(o.responseText)
-            var r = JSON.parse(o.responseText);
-            if (r.state == 200) {
-
-
-				Y.one('#progress_bar').setStyle('display','block')
-
-            //    api_request_progess(r.fork_key)
-
-                //  window.location.reload();
-            } else {
-                alert(r.msg);
-            }
-
-        }
-
-        , Y);
-        var result = Y.io(request);
-
-*/
-
 
 
     } else {
@@ -177,7 +148,6 @@ function submit() {
     }
 
 }
-
 
 function get_results(fork_key) {
 
@@ -216,7 +186,6 @@ function get_results(fork_key) {
 
 
 }
-
 
 function api_request_progess(fork_key) {
 
@@ -257,7 +226,7 @@ function api_request_progess(fork_key) {
                     } else if (r.fork_state == 'Finished') {
 
                         get_results(r.fork_key);
-                         display_result_table('&fork_key='+r.fork_key);
+                        display_result_table('&fork_key=' + r.fork_key);
                     }
 
 
@@ -277,22 +246,17 @@ function api_request_progess(fork_key) {
 
 }
 
+function display_result_table(query) {
 
 
+    Y.one('#results_table').setStyle('display', 'block')
 
-
-
-function display_result_table(query){
-
-
-Y.one('#results_table').setStyle('display','block')
-
- table.datasource.load({
+    table.datasource.load({
         request: query,
 
         callback: {
             success: function(e) {
-               
+
                 table.datasource.onDataReturnInitializeTable(e);
             },
             failure: function() {
@@ -303,10 +267,10 @@ Y.one('#results_table').setStyle('display','block')
 
 }
 
-Y.use("node", "json-stringify", "io-base", "uploader", "anim","datatable", "datasource-get", "datasource-jsonschema", "datatable-datasource", function(Y) {
+Y.use("node", "json-stringify", "io-base", "uploader", "datatable", "datasource-get", "datasource-jsonschema", "datatable-datasource", function(Y) {
 
 
-	log_request();
+    log_request();
 
     Y.on("click", select_funder, '#funders_chooser .funder', null);
 
@@ -315,51 +279,18 @@ Y.use("node", "json-stringify", "io-base", "uploader", "anim","datatable", "data
     Y.on("keyup", journals_changed, '#journals', null);
 
 
-    close_select_funders = new Y.Anim({
-        node: '#choose_funders',
-        to: {
-            height: 0,
-
-            opacity: 0,
-        }
-    });
-
-    close_input_journals = new Y.Anim({
-        node: '#input_journals',
-        to: {
-            height: 0,
-
-            opacity: 0,
-        }
-    });
-
-    close_submit_query = new Y.Anim({
-        node: '#submit_query',
-        to: {
-            height: 0,
-
-            opacity: 0,
-        }
-    });
-
-    close_select_funders.on('end', function() {
-        close_select_funders.get('node').setStyle('display', 'none');
-    });
-    close_input_journals.on('end', function() {
-        close_input_journals.get('node').setStyle('display', 'none');
-    });
-    close_submit_query.on('end', function() {
-        close_submit_query.get('node').setStyle('display', 'none');
-    });
 
 
 
     if (Y.Uploader.TYPE != "none") {
         var uploader = new Y.Uploader({
-            width: "400px",
-            height: "40px",
-            selectButtonLabel: Y.one('#upload_file_label').get('value')
-        }).render("#uploaderContainerID");
+            width: "450px",
+           height: "50px",
+            selectButtonLabel: Y.one('#upload_file_label').get('value'),
+            selectFilesButton: Y.Node.create('<button id="select_files" class="input" >'+Y.one('#upload_file_label').get('value')+'</button>')
+            
+            
+        }).render("#select_files_container");
 
         uploader.after("fileselect", function(event) {
 
@@ -393,8 +324,8 @@ Y.use("node", "json-stringify", "io-base", "uploader", "anim","datatable", "data
                 }
 
                 var label = r.filename + ' (' + r.size + ')'
-                Y.one('#uploaderContainerID div button').set('innerHTML', label)
-                Y.one('#uploaderContainerID div button').set('aria-label', label)
+                Y.one('#select_files_container div button').set('innerHTML', label)
+                Y.one('#select_files_container div button').set('aria-label', label)
 
             } else {
 
@@ -418,17 +349,18 @@ Y.use("node", "json-stringify", "io-base", "uploader", "anim","datatable", "data
     } else {
         alert("Sorry your browser is not supported")
     }
-    
-    
-    
-    var url = "ar_results.php?tipo=list_results",dataSource;
+
+
+
+    var url = "ar_results.php?tipo=list_results",
+        dataSource;
 
 
     dataSource = new Y.DataSource.Get({
         source: url
     });
 
-   
+
     dataSource.plug(Y.Plugin.DataSourceJSONSchema, {
         schema: {
             resultListLocator: "query.results",
@@ -450,8 +382,14 @@ Y.use("node", "json-stringify", "io-base", "uploader", "anim","datatable", "data
             label: "Query",
             width: '230px'
         },
-        
-         
+            {
+            key: "journal",
+            label: "Journal",
+            allowHTML: true,
+            width: '350px'
+        },
+
+
             {
             key: "compilance",
             label: "Compilance"
@@ -459,18 +397,12 @@ Y.use("node", "json-stringify", "io-base", "uploader", "anim","datatable", "data
             {
             key: "compilance_type",
             label: "Result",
-              width: '100px'
-        },
-           {
-            key: "journal",
-            label: "Journal",
-            allowHTML: true,
-             width: '350px'
+            width: '100px'
         },
             {
             key: "notes",
             label: "Notes",
-              allowHTML: true,
+            allowHTML: true,
             width: '435px'
         },
 
@@ -484,12 +416,7 @@ Y.use("node", "json-stringify", "io-base", "uploader", "anim","datatable", "data
 
     table.render("#results_table");
 
-  
+
 
 
 });
-
-
-
-
-
