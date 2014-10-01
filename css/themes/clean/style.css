@@ -74,9 +74,12 @@ display:inline-block;  margin-bottom:10px
 #select_files{width:420px;padding:0px;font-size:100%}
 #journals{width:420px;padding:10px;font-size:100%;height:21px}
 
-#submit{width:400px;margin-top:60px;font-size:100%;padding:10px 0px;border:2px solid #56433b;color:#fff;background-color:#716058}
+.button{font-size:100%;padding:10px 0px;border:2px solid #56433b;color:#fff;background-color:#716058;cursor:pointer}
+#submit{width:400px;margin-top:60px;}
+#download_result{width:200px}
+
 
 #results_overview td{padding:3px 20px 2px 20px;}
 #results_overview td{border-top:1px solid #ccc}
-#results_overview{width:400px; border-collapse: collapse;margin:0 auto;border-top:1px solid #777;border-bottom:1px solid #777}
+#results_overview{ border-collapse: collapse;margin:0 auto;border-top:1px solid #777;border-bottom:1px solid #777}
 #results_table{margin-top:20px;font-size:80%}

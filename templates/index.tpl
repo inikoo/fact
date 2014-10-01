@@ -15,6 +15,7 @@
 		<input type="hidden" id="th_notes_label" value="{t}Notes{/t}"> 
 		<input type="hidden" id="table_error1_label" value="{t}Sorry, the results could not be retreived{/t}"> 
 		<input type="hidden" id="uploader_error1_label" value="{t}Sorry your browser is not supported{/t}"> 
+		<input type="hidden" id="fork_key" value=""> 
 
 	
 	
@@ -64,7 +65,7 @@
 		</div>
 	</div>
 	<div id="submit_query">
-		<button id="submit">{t}Select Funders & Input Journals{/t}</button> 
+		<button id="submit" class="button">{t}Select Funders & Input Journals{/t}</button> 
 	</div>
 	<div id="progress_bar" style="display:none;text-align:center;padding:20px">
 		<div id="progress_status">
@@ -73,12 +74,16 @@
 		</div>
 	</div>
 	<div id="results" style="display:none;text-align:center;padding:20px">
-		<div id="results_header">
+		<div id="results_header" >
+		
+		
 			<table border="0" id="results_overview">
-				<tr>
+				<tr >
+					<td rowspan="5" style="width:300px;border-top:1px solid #eee;border-bottom:1px solid #eee;">{t}Funders{/t}:<div style="margin-top:10px" id="results_funders" ></div>   </td>
 					<td>{t}Gold{/t}</td>
 					<td id="gold"></td>
 					<td id="compilant" rowspan="3"> </td>
+					<td rowspan="5" style="width:300px;border-top:1px solid #eee;border-bottom:1px solid #eee;"> <a href="" id="download_result" style="display:none"><button class="button" >{t}Download{/t}</button></a>  </td>
 				</tr>
 				<tr>
 					<td>{t}Green{/t}</td>

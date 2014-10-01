@@ -115,6 +115,8 @@ function submit() {
 
                         Y.one('#progress_bar').setStyle('display', 'block')
 
+						Y.one('#results_funders').set('innerHTML',r.formated_funders)
+
                         api_request_progess(r.fork_key)
 
                         //  window.location.reload();
@@ -220,6 +222,12 @@ function api_request_progess(fork_key) {
 
                         get_results(r.fork_key);
                         display_result_table('&fork_key=' + r.fork_key);
+                        
+                        Y.one('#download_result').setStyle('display', 'block')
+                        Y.one('#download_result').setStyle('href', 'result.php?id='.r.fork_key)
+
+						Y.one('#fork_key').set('value', r.fork_key)
+                        
                     }
                 } else {
                     alert(r.msg);
@@ -236,6 +244,7 @@ function display_result_table(query) {
 
 
     Y.one('#results_table').setStyle('display', 'block')
+	
 
     table.datasource.load({
         request: query,
@@ -252,6 +261,8 @@ function display_result_table(query) {
     });
 
 }
+
+
 
 Y.use("node", "json-stringify", "io-base", "uploader", "datatable", "datasource-get", "datasource-jsonschema", "datatable-datasource", function(Y) {
 
@@ -321,16 +332,8 @@ Y.use("node", "json-stringify", "io-base", "uploader", "datatable", "datasource-
                 } else {
                     Y.one('#submit').set('innerHTML', Y.one('#select_journals_label').get('value'))
                 }
-
-
-
             }
-
-
         });
-
-
-
 
     } else {
         alert(Y.one('#uploader_error1_label').get('value'))

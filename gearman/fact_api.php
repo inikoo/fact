@@ -85,6 +85,8 @@ function call_fact_api($journal_data,$funders_data) {
 
 	$request=$api_url.'?ak=xml&markup=xml'.$funders_parameter.$journal_parameter;
 
+	print "$request\n";
+
 	$xml = file_get_contents($request);
 
 	$result=parse_xml_result($result,$xml);

@@ -48,7 +48,7 @@ default:
 function lookup_from_file($data) {
 	global $mysqli;
 
-include 'libs/PHPExcel/Classes/PHPExcel/IOFactory.php';
+	include 'libs/PHPExcel/Classes/PHPExcel/IOFactory.php';
 
 
 	$upload_key=$data['upload_key'];
@@ -68,80 +68,25 @@ include 'libs/PHPExcel/Classes/PHPExcel/IOFactory.php';
 	}
 
 
-$fp = tmpfile();
-		fwrite($fp, $content);
-		rewind($fp);
-		$metaDatas = stream_get_meta_data($fp);
-$tmpFilename = $metaDatas['uri'];
-		
-$objPHPExcel = PHPExcel_IOFactory::load($tmpFilename);
-$sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
-//print_r($sheetData);
+	$fp = tmpfile();
+	fwrite($fp, $content);
+	rewind($fp);
+	$metaDatas = stream_get_meta_data($fp);
+	$tmpFilename = $metaDatas['uri'];
+
+	$objPHPExcel = PHPExcel_IOFactory::load($tmpFilename);
+	$sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
+	//print_r($sheetData);
 
 
 
-foreach($sheetData as $row){
-	if(isset($row['A']) and $row['A']!='' ){
-	$journals[]=$row['A'];
-	}
-}
-
-/*
-
-	$file_type='csv';
-
-	$sql=sprintf("select `Upload File Type` from `Upload Dimension` where `Upload Key`=%d",$upload_key);
-	$res=$mysqli->query($sql);
-	if ($row=$res->fetch_assoc()) {
-		switch ($row['Upload File Type']) {
-		case 'application/csv':
-		case 'text/csv':
-		case 'text/tsv':
-		case 'text/plain':
-
-			$file_type='csv';
+	foreach ($sheetData as $row) {
+		if (isset($row['A']) and $row['A']!='' ) {
+			$journals[]=$row['A'];
 		}
-
 	}
 
 
-
-	switch ($file_type) {
-	case 'csv':
-
-
-		$fp = tmpfile();
-		fwrite($fp, $content);
-		rewind($fp);
-
-		$journals=array();
-		while (!feof($fp)) {
-			$tmp = fgetcsv($fp);
-			$journals[]=$tmp[0];
-		}
-
-
-
-		fclose($fp);
-
-
-
-		break;
-	default:
-		$response= array(
-			'state'=>400,'msg'=>_('Can not read file contents')
-		);
-		header('Content-Type: application/json');
-		echo json_encode($response);
-		return;
-
-	}
-
-
-
-print_r($journals);
-exit;
-*/
 
 	$funders=parse_funders($data['funders']);
 
@@ -162,8 +107,8 @@ exit;
 	list($fork_key,$msg)=new_fork('fact_api_request',$request_data,$account_code='FACT');
 
 	$sql=sprintf("update `Upload Dimension`set `Upload Status`='Processed',`Processed Date`=%s where `Upload Key`=%d",
-	prepare_mysql(gmdate('Y-m-d H:i:s')),
-	$upload_key);
+		prepare_mysql(gmdate('Y-m-d H:i:s')),
+		$upload_key);
 	$mysqli->query($sql);
 
 	$sql=sprintf("delete from `Upload Content Dimension` where `Upload Key`=%d",$upload_key);
@@ -171,7 +116,7 @@ exit;
 
 
 	$response= array(
-		'state'=>200,'fork_key'=>$fork_key,'msg'=>$msg
+		'state'=>200,'fork_key'=>$fork_key,'msg'=>$msg,'formated_funders'=>get_formated_funders($funders)
 	);
 	header('Content-Type: application/json');
 	echo json_encode($response);
@@ -197,7 +142,7 @@ function lookup_from_string($data) {
 
 
 	$response= array(
-		'state'=>200,'fork_key'=>$fork_key,'msg'=>$msg
+		'state'=>200,'fork_key'=>$fork_key,'msg'=>$msg,'formated_funders'=>get_formated_funders($funders)
 	);
 	header('Content-Type: application/json');
 	echo json_encode($response);
@@ -206,7 +151,14 @@ function lookup_from_string($data) {
 }
 
 
-
+function get_formated_funders($funders){
+	$formated_funders='';
+	foreach($funders as $funder){
+		$formated_funders.=', '.$funder['label'];
+	}
+	$formated_funders=preg_replace('/^\, /','',$formated_funders);
+	return $formated_funders;
+}
 
 
 function parse_journals($journals) {
@@ -229,28 +181,28 @@ function parse_funders($funders) {
 	foreach ($funders as $funder_code) {
 		switch ($funder_code) {
 		case 'ahrc':
-			$parsed_funders[]=array('juliet_id'=>698,'code'=>$funder_code);
+			$parsed_funders[]=array('juliet_id'=>698,'code'=>$funder_code,'label'=>'AHRC');
 			break;
 		case 'bbsrc':
-			$parsed_funders[]=array('juliet_id'=>709,'code'=>$funder_code);
+			$parsed_funders[]=array('juliet_id'=>709,'code'=>$funder_code,'label'=>'BBSRC');
 			break;
 		case 'esrc':
-			$parsed_funders[]=array('juliet_id'=>717,'code'=>$funder_code);
+			$parsed_funders[]=array('juliet_id'=>717,'code'=>$funder_code,'label'=>'ESRC');
 			break;
 		case 'epsrc':
-			$parsed_funders[]=array('juliet_id'=>722,'code'=>$funder_code);
+			$parsed_funders[]=array('juliet_id'=>722,'code'=>$funder_code,'label'=>'EPSRC');
 			break;
 		case 'mrc':
-			$parsed_funders[]=array('juliet_id'=>705,'code'=>$funder_code);
+			$parsed_funders[]=array('juliet_id'=>705,'code'=>$funder_code,'label'=>'MRC');
 			break;
 		case 'nerc':
-			$parsed_funders[]=array('juliet_id'=>726,'code'=>$funder_code);
+			$parsed_funders[]=array('juliet_id'=>726,'code'=>$funder_code,'label'=>'NERC');
 			break;
 		case 'stfc':
-			$parsed_funders[]=array('juliet_id'=>716,'code'=>$funder_code);
+			$parsed_funders[]=array('juliet_id'=>716,'code'=>$funder_code,'label'=>'STFC');
 			break;
 		case 'wellcome_trust':
-			$parsed_funders[]=array('juliet_id'=>695,'code'=>$funder_code);
+			$parsed_funders[]=array('juliet_id'=>695,'code'=>$funder_code,'label'=>'Wellcome Trust');
 			break;
 		}
 
