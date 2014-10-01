@@ -224,8 +224,7 @@ function api_request_progess(fork_key) {
                         display_result_table('&fork_key=' + r.fork_key);
                         
                         Y.one('#download_result').setStyle('display', 'block')
-                        Y.one('#download_result').setStyle('href', 'result.php?id='.r.fork_key)
-
+                        Y.one('#download_result').set('href', 'result.php?id='+r.fork_key)
 						Y.one('#fork_key').set('value', r.fork_key)
                         
                     }
@@ -284,7 +283,7 @@ Y.use("node", "json-stringify", "io-base", "uploader", "datatable", "datasource-
             width: "450px",
             height: "50px",
             selectButtonLabel: Y.one('#upload_file_label').get('value'),
-            selectFilesButton: Y.Node.create('<button id="select_files" class="input" >' + Y.one('#upload_file_label').get('value') + '</button>')
+            selectFilesButton: Y.Node.create('<button id="select_files" class="button" >' + Y.one('#upload_file_label').get('value') + '</button>')
 
 
         }).render("#select_files_container");
@@ -294,9 +293,6 @@ Y.use("node", "json-stringify", "io-base", "uploader", "datatable", "datasource-
             uploader.uploadAll("ar_upload.php");
 
         });
-
-
-
 
         uploader.after("uploadcomplete", function(event) {
 

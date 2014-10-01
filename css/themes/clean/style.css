@@ -76,7 +76,7 @@ display:inline-block;  margin-bottom:10px
 
 .button{font-size:100%;padding:10px 0px;border:2px solid #56433b;color:#fff;background-color:#716058;cursor:pointer}
 #submit{width:400px;margin-top:60px;}
-#download_result{width:200px}
+#download_result button{width:250px;}
 
 
 #results_overview td{padding:3px 20px 2px 20px;}
