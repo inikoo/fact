@@ -36,11 +36,12 @@ default:
 }
 
 function get_wait_info($data) {
+   require_once 'common_natural_language.php';
 
 	global $mysqli;
 
 	$fork_key=$data['fork_key'];
-	$sql=sprintf("select `Fork Result`,`Fork Scheduled Date`,`Fork Start Date`,`Fork State`,`Fork Type`,`Fork Operations Done`,`Fork Operations No Changed`,`Fork Operations Errors`,`Fork Operations Total Operations` from `Fork Dimension` where `Fork Key`=%d ",
+	$sql=sprintf("select `Fork Key`,`Fork Result`,`Fork Scheduled Date`,`Fork Start Date`,`Fork State`,`Fork Type`,`Fork Operations Done`,`Fork Operations No Changed`,`Fork Operations Errors`,`Fork Operations Total Operations` from `Fork Dimension` where `Fork Key`=%d ",
 		$fork_key);
 	$res=$mysqli->query($sql);
 	if ($row=$res->fetch_assoc()) {
@@ -58,7 +59,7 @@ function get_wait_info($data) {
 
 		}
 
-
+		$etr='';
 
 		if ($row['Fork State']=='In Process') {
 			//$msg=number($row['Fork Operations Done']+$row['Fork Operations Errors']+$row['Fork Operations No Changed']).'/'.$row['Fork Operations Total Operations'];
@@ -68,10 +69,18 @@ function get_wait_info($data) {
 			$formated_progress=_('Processing').' '.number($row['Fork Operations Done']).' '._('of').' '.number($row['Fork Operations Total Operations']);
 
 			$formated_progress.=$formated_tag;
+			
+			if($row['Fork Operations Done']>1){
+				$etr=_('ETA').': '.seconds_to_string(
+				($row['Fork Operations Total Operations']-$row['Fork Operations Done'])*
+				(gmdate('U')-strtotime($row['Fork Start Date']))/$row['Fork Operations Done']
+				);
+			}
+		
 
 		}elseif ($row['Fork State']=='Queued') {
 			$formated_status=_('Queued');
-			$formated_progress=_('Records to process').': '.number($row['Fork Operations Total Operations']);
+			$formated_progress=_('Records to process').': '.number($row['Fork Operations Total Operations']).' '.$row['Fork Key'];
 
 
 		}elseif ($row['Fork State']=='Finished') {
@@ -102,11 +111,12 @@ function get_wait_info($data) {
 			'todo'=>number($row['Fork Operations Total Operations']-$row['Fork Operations Done']),
 			'result'=>$row['Fork Result'],
 			'formated_status'=>$formated_status,
-			'formated_progress'=>$formated_progress,
+			'formated_progress'=>$formated_progress.'<br>'.$etr,
 			'progress'=>sprintf('%s/%s (%s)',number($row['Fork Operations Done']),number($row['Fork Operations Total Operations']),percentage($row['Fork Operations Done'],$row['Fork Operations Total Operations'])),
 			
 			'tag'=>$data['tag'],
-			'result_extra_data'=>$result_extra_data
+			'result_extra_data'=>$result_extra_data,
+			'etr'=>$etr
 
 		);
 

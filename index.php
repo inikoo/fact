@@ -13,7 +13,7 @@ $css_files=array(
 );
 
 $css_files[]='css/themes/'.$theme.'/style.css';
-$css_files[]='css/themes/'.$theme.'/buttons.css';
+//$css_files[]='css/themes/'.$theme.'/buttons.css';
 
 $js_files=array(
 	'libs/yui/yui3/build/yui/yui-min.js',

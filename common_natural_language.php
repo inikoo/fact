@@ -62,7 +62,7 @@ function seconds_to_string($secs,$short_tags=true) {
     }
 
 
-    $string=_trim($string);
+    $string=trim($string);
     return $string;
 
 }

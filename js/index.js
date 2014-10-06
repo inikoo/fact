@@ -245,7 +245,7 @@ function api_request_progess(fork_key) {
 
         on: {
             success: function(id, o) {
-                //  alert(o.responseText)
+                // alert(o.responseText)
                 var r = JSON.parse(o.responseText);
 
                 if (r.state == 200) {
