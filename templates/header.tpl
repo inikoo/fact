@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="{$i}" type="text/css" />
 	{/foreach} {foreach from=$js_files item=i } <script type="text/javascript" src="{$i}"></script> {/foreach} 
 </head>
-<body class="yui3-skin-sam inikoo">
+<body class="inikoo">
 {if $analyticstracking}{include file='analyticstracking.tpl'}{/if} 
 <div id="doc4">
 	<div id="header">
