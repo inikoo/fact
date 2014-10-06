@@ -48,7 +48,7 @@ function list_results($data) {
 	$results=array();
 	while ($row=$res->fetch_assoc()) {
 
-		$journal=$row['Journal Name'].'<br> '.$row['Journal ISSN'];
+		$journal=$row['Journal Name'];
 		$notes='';
 		$compilance=$row['Compilance'];
 		if ($row['Result Type']=='Error') {

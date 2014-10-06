@@ -88,8 +88,8 @@ display:inline-block;  margin-bottom:10px
 #results_overview{ border-collapse: collapse;margin:0 auto;border-top:1px solid #777;border-bottom:1px solid #777}
 #results_table{margin-top:20px;font-size:80%}
 
-.yui3-datatable-table {border-bottom:1px solid #777;border-top:1px solid #777;}
+.yui3-datatable-table {border-top:1px solid #777;}
 .yui3-datatable-table th{border-bottom:1px solid #aaa;padding:2px 0px}
 .yui3-datatable-message td{padding:20px}
-.yui3-datatable-table td{border-bottom:1px solid #ccc;padding:2px 0px}
+.yui3-datatable-table td{border-bottom:1px solid #aaa;padding:2px 0px}
 .yui3-datatable-even td{background-color:#E1CBB3;}

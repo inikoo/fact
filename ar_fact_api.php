@@ -166,12 +166,14 @@ function parse_journals($journals) {
 
 	foreach ($journals as $journal) {
 		$journal=trim($journal);
-		if (preg_match('/^\d{4}-\d{3}(\d|x)$/i',$journal)) {
-			$parsed_journals[]=array('query_type'=>'issn','query'=>$journal);
-		}else {
-			$parsed_journals[]=array('query_type'=>'title','query'=>$journal);
-
-		}
+		
+		$parsed_journals[]=array('query_type'=>'issn','query'=>$journal);
+		// Accept only issn
+		//if (preg_match('/^\d{4}-\d{3}(\d|x)$/i',$journal)) {
+		//	$parsed_journals[]=array('query_type'=>'issn','query'=>$journal);
+		//}else {
+		//	$parsed_journals[]=array('query_type'=>'title','query'=>$journal);
+		//}
 	}
 	return $parsed_journals;
 }
