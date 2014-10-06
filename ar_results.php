@@ -49,13 +49,13 @@ function list_results($data) {
 	while ($row=$res->fetch_assoc()) {
 
 		$journal=$row['Journal Name'].'<br> '.$row['Journal ISSN'];
-	$notes='';
+		$notes='';
 		$compilance=$row['Compilance'];
 		if ($row['Result Type']=='Error') {
 			$compilance_type=_('Not Found');
 		}else {
 			$compilance_type=$row['Compilance Type'];
-		
+
 			if ($row['Gold Compilance Advice']!='')
 				$notes=$row['Gold Compilance Advice'].'<br>';
 			if ($row['Green Compilance Advice']!='')
@@ -119,7 +119,7 @@ function get_results($data) {
 	while ($row=$res->fetch_assoc()) {
 		if ($row['Compilance']=='Yes') {
 			$result_data['compilant']=number($row['number']);
-		}else{
+		}else {
 			$result_data['no_compilant']=number($row['number']);
 			$result_data['total_no_compilant']+=$row['number'];
 

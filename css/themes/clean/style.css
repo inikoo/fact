@@ -14,7 +14,7 @@
   font-family: 'Oxygen';
   font-style: normal;
   font-weight: 700;
-  src: local('Oxygen Bold'), local('Oxygen-Bold'),  url('fonts/oxigen400.woff') format('woff');
+  src: local('Oxygen Bold'), local('Oxygen-Bold'),  url('fonts/oxigen700.woff') format('woff');
 }
 
 body{font-family: 'Oxygen', sans-serif;font-weight: 400;background-color: #eee;color:#777}
@@ -81,5 +81,9 @@ display:inline-block;  margin-bottom:10px
 
 #results_overview td{padding:3px 20px 2px 20px;}
 #results_overview td{border-top:1px solid #ccc}
+#results_overview tr.total td{font-weight: 700;}
+#results_overview tr.first td,#results_overview tr.total td{border-top:1px solid #777}
+
+
 #results_overview{ border-collapse: collapse;margin:0 auto;border-top:1px solid #777;border-bottom:1px solid #777}
 #results_table{margin-top:20px;font-size:80%}

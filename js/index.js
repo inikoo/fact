@@ -1,4 +1,4 @@
-function select_funder() {
+function select_multiple_funders() {
     var code = this.getAttribute('code')
 
     if (Y.one('#funder_' + code).hasClass('selected')) {
@@ -20,6 +20,54 @@ function select_funder() {
             number_selected_funders++;
         }
     }
+
+    if (number_selected_funders) {
+        Y.one('#choose_funders').removeClass('error')
+
+        if (Y.one('#journals').get('value') == '' && Y.one('#upload_key').get('value') == 0) {
+            Y.one('#submit').set('innerHTML', Y.one('#select_journals_label').get('value'))
+
+        } else {
+            Y.one('#submit').set('innerHTML', Y.one('#submit_label').get('value'))
+        }
+
+    } else {
+        if (Y.one('#journals').get('value') == '' && Y.one('#upload_key').get('value') == 0) {
+            Y.one('#submit').set('innerHTML', Y.one('#select_funders_and_journals_label').get('value'))
+
+        } else {
+            Y.one('#submit').set('innerHTML', Y.one('#select_funders_label').get('value'))
+        }
+
+    }
+
+    Y.one('#number_selected_funders').set('value', number_selected_funders)
+
+}
+
+function select_funder() {
+    var code = this.getAttribute('code')
+
+    if (Y.one('#funder_' + code).hasClass('selected')) {
+        Y.one('#funder_checkbox_' + code).set('src', 'art/checkbox_unchecked.png')
+
+        Y.one('#funder_' + code).removeClass('selected')
+         var number_selected_funders = 0;
+    } else {
+    
+    Y.all('#funders_chooser .checkbox').set('src', 'art/checkbox_unchecked.png')
+      Y.all('#funders_chooser .funder').removeClass('selected')
+  
+    
+    
+    
+    
+        Y.one('#funder_checkbox_' + code).set('src', 'art/checkbox_checked.png')
+        Y.one('#funder_' + code).addClass('selected')
+       var number_selected_funders = 1;
+    }
+
+   
 
     if (number_selected_funders) {
         Y.one('#choose_funders').removeClass('error')
@@ -339,13 +387,9 @@ Y.use("node", "json-stringify", "io-base", "uploader", "datatable", "datasource-
 
     var url = "ar_results.php?tipo=list_results",
         dataSource;
-
-
     dataSource = new Y.DataSource.Get({
         source: url
     });
-
-
     dataSource.plug(Y.Plugin.DataSourceJSONSchema, {
         schema: {
             resultListLocator: "query.results",
@@ -359,7 +403,6 @@ Y.use("node", "json-stringify", "io-base", "uploader", "datatable", "datasource-
                 ]
         }
     });
-
     table = new Y.DataTable({
         columns: [
             {
@@ -394,11 +437,9 @@ Y.use("node", "json-stringify", "io-base", "uploader", "datatable", "datasource-
             ],
 
     });
-
     table.plug(Y.Plugin.DataTableDataSource, {
         datasource: dataSource
     });
-
     table.render("#results_table");
 
 

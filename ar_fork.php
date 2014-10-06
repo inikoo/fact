@@ -50,11 +50,11 @@ function get_wait_info($data) {
 
 		switch ($data['tag']) {
 		case 'journals':
-			$formated_tag=' '.ngettext('journal','journals',$row['Fork Operations Done']);
+			$formated_tag=' '.ngettext('journal','journals',$row['Fork Operations Total Operations']);
 			break;
 
 		default:
-			$formated_tag=' '.ngettext('record','records',$row['Fork Operations Done']);
+			$formated_tag=' '.ngettext('record','records',$row['Fork Operations Total Operations']);
 
 		}
 
