@@ -7,16 +7,17 @@
 */
 
 
-function new_fork($type,$data,$account_code) {
+function new_fork($type,$number_operations,$data,$account_code) {
 	global $mysqli;
 
 	$fork_encrypt_key=md5('huls0fjhslsshskslgjbtqcwijnbxhl2391');
 
 	$token=substr(str_shuffle(md5(time()).rand().str_shuffle('qwertyuiopasdfghjjklmnbvcxzQWERTYUIOPKJHGFDSAZXCVBNM1234567890') ),0,64);
-	$sql=sprintf("insert into `Fork Dimension`  (`Fork Process Data`,`Fork Token`,`Fork Type`) values (%s,%s,%s)  ",
+	$sql=sprintf("insert into `Fork Dimension`  (`Fork Process Data`,`Fork Token`,`Fork Type`,`Fork Operations Total Operations`) values (%s,%s,%s,%d)  ",
 		prepare_mysql(json_encode($data)),
 		prepare_mysql( $token),
-		prepare_mysql($type)
+		prepare_mysql($type),
+		$number_operations
 
 	);
 

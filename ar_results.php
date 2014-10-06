@@ -50,11 +50,46 @@ function list_results($data) {
 
 		$journal=$row['Journal Name'];
 		$notes='';
-		$compilance=$row['Compilance'];
+
+
+		switch ($row['Compilance']) {
+		case 'No':
+			$compilance=_('No');
+			break;
+		case 'Yes':
+			$compilance=_('Yes');
+			break;
+		case 'Maybe':
+			$compilance=_('Maybe');
+			break;
+		default:
+			$compilance=$row['Compilance'];
+
+		}
+
+
 		if ($row['Result Type']=='Error') {
 			$compilance_type=_('Not Found');
 		}else {
 			$compilance_type=$row['Compilance Type'];
+
+
+			switch ($row['Compilance Type']) {
+			case 'GreenGold':
+				$compilance_type=_('Gold & Green');
+				break;
+			case 'Green':
+				$compilance_type=_('Green');
+				break;
+			case 'Gold':
+				$compilance_type=_('Gold');
+				break;
+			default:
+				$compilance_type=$row['Compilance Type'];
+
+			}
+
+
 
 			if ($row['Gold Compilance Advice']!='')
 				$notes=$row['Gold Compilance Advice'].'<br>';
@@ -64,6 +99,9 @@ function list_results($data) {
 			$notes=preg_replace('/\<br\>$/','',$notes);
 
 		}
+
+
+
 		$results[]=array(
 			'query'=>$row['Query'],
 			'journal'=>$journal,

@@ -80,7 +80,7 @@ function get_wait_info($data) {
 
 		}elseif ($row['Fork State']=='Queued') {
 			$formated_status=_('Queued');
-			$formated_progress=_('Records to process').': '.number($row['Fork Operations Total Operations']).' '.$row['Fork Key'];
+			$formated_progress=_('Records to process').': '.number($row['Fork Operations Total Operations']);
 
 
 		}elseif ($row['Fork State']=='Finished') {

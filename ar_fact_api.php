@@ -93,8 +93,10 @@ function lookup_from_file($data) {
 	$journals=parse_journals($journals);
 
 	$request_data=array();
+	$number_journals=0;
 	foreach ($journals as $journal) {
 		$request_data[]=array('journal_data'=>$journal,'funders_data'=>$funders);
+		$number_journals++;
 	}
 	$request_data=json_encode($request_data);
 
@@ -104,7 +106,7 @@ function lookup_from_file($data) {
 
 
 
-	list($fork_key,$msg)=new_fork('fact_api_request',$request_data,$account_code='FACT');
+	list($fork_key,$msg)=new_fork('fact_api_request',$number_journals,$request_data,$account_code='FACT');
 
 	$sql=sprintf("update `Upload Dimension`set `Upload Status`='Processed',`Processed Date`=%s where `Upload Key`=%d",
 		prepare_mysql(gmdate('Y-m-d H:i:s')),
@@ -132,12 +134,14 @@ function lookup_from_string($data) {
 	$funders=parse_funders($data['funders']);
 
 	$request_data=array();
+	$number_journals=0;
 	foreach ($journals as $journal) {
 		$request_data[]=array('journal_data'=>$journal,'funders_data'=>$funders);
+		$number_journals++;
 	}
 	$request_data=json_encode($request_data);
 
-	list($fork_key,$msg)=new_fork('fact_api_request',$request_data,$account_code='FACT');
+	list($fork_key,$msg)=new_fork('fact_api_request',$number_journals,$request_data,$account_code='FACT');
 
 
 

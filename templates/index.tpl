@@ -9,6 +9,7 @@
 		<input type="hidden" id="select_funders_label" value="{t}Select Funder{/t}"> 
 		<input type="hidden" id="submit_label" value="{t}Find Compilance{/t}"> 
 		<input type="hidden" id="th_query_label" value="{t}Query{/t}"> 
+		<input type="hidden" id="th_issn_label" value="{t}ISSN{/t}"> 
 		<input type="hidden" id="th_journal_label" value="{t}Journal{/t}"> 
 		<input type="hidden" id="th_compilance_label" value="{t}Compilance{/t}"> 
 		<input type="hidden" id="th_result_label" value="{t}Result{/t}"> 

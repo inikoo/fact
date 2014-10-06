@@ -407,7 +407,7 @@ Y.use("node", "json-stringify", "io-base", "uploader", "datatable", "datasource-
         columns: [
             {
             key: "query",
-            label: Y.one('#th_query_label').get('value'),
+            label: Y.one('#th_issn_label').get('value'),
             width: '230px'
         },
             {
